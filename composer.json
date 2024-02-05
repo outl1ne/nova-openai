@@ -1,0 +1,56 @@
+{
+  "name": "outl1ne/nova-openai",
+  "description": "Abstraction layer to store OpenAI communication, pricing and to present it in Laravel Nova environment.",
+  "keywords": [
+    "laravel",
+    "nova"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^8.0",
+    "laravel/nova": "^4.32",
+    "nova-kit/nova-packages-tool": "^1.14",
+    "outl1ne/nova-translations-loader": "^5.0"
+  },
+  "require-dev": {
+    "nova-kit/nova-devtool": "^1.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Outl1ne\\NovaOpenAI\\": "src/",
+      "Outl1ne\\NovaOpenAI\\Database\\Factories\\": "database/factories/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Workbench\\App\\": "workbench/app/",
+      "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Outl1ne\\NovaOpenAI\\NovaOpenAIServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": {
+    "nova": {
+      "type": "composer",
+      "url": "https://nova.laravel.com"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+      "@clear",
+      "@prepare"
+    ],
+    "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+    "prepare": "@php vendor/bin/testbench package:discover --ansi"
+  }
+}

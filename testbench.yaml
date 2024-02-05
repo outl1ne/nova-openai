@@ -1,0 +1,38 @@
+providers:
+  - Laravel\Nova\NovaCoreServiceProvider
+  - Workbench\App\Providers\NovaServiceProvider
+
+migrations:
+  - workbench/database/migrations
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: /nova
+  user: admin@localhost
+  install: true
+  build:
+    - asset-publish
+    - create-sqlite-db
+    - db:wipe
+    - migrate:refresh
+  assets:
+    - nova-assets
+  sync: []
+  discovers:
+    web: true
+    api: true
+    commands: true
+    views: false
+
+purge:
+  directories:
+    - lang/*
+    - public/vendor/*
+
+env:
+  - DB_CONNECTION=mysql
+  - DB_DATABASE=nova_openai
+  - DB_USERNAME=root
+  - DB_PASSWORD=
