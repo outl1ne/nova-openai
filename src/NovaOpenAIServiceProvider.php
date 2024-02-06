@@ -2,11 +2,14 @@
 
 namespace Outl1ne\NovaOpenAI;
 
+use OpenAI;
+use OpenAI\Client;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
+use OpenAI\Contracts\ClientContract;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
+use OpenAI\Laravel\Exceptions\ApiKeyIsMissing;
 
 class NovaOpenAIServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
 
         // Register resources
         Nova::resources(array_filter([
+            NovaOpenAIConfig::resource('openai_request'),
         ]));
 
         $this->app->booted(function () {
@@ -69,5 +73,25 @@ class NovaOpenAIServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/nova-openai.php', 'nova-openai');
+
+        // Workaround for openai-php/laravel requiring the configuration file to be published
+        $this->mergeConfigFrom(__DIR__ . '/../config/openai.php', 'openai');
+
+        $this->app->singleton(NovaOpenAIClient::class, static function (): ClientContract {
+            $apiKey = config('openai.api_key');
+            $organization = config('openai.organization');
+
+            if (! is_string($apiKey) || ($organization !== null && ! is_string($organization))) {
+                throw ApiKeyIsMissing::create();
+            }
+
+            return new NovaOpenAIClient(OpenAI::factory()
+                ->withApiKey($apiKey)
+                ->withOrganization($organization)
+                ->withHttpHeader('OpenAI-Beta', 'assistants=v1')
+                ->withHttpClient(new \GuzzleHttp\Client(['timeout' => config('openai.request_timeout', 30)]))
+                ->make());
+        });
+        $this->app->alias(NovaOpenAIClient::class, 'nova-openai');
     }
 }

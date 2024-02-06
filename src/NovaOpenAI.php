@@ -32,6 +32,7 @@ class NovaOpenAI extends Tool
     public function menu(Request $request)
     {
         return MenuSection::make('OpenAI', array_filter([
+            self::makeResourceMenuItem('openai_request'),
         ]))->icon('newspaper')->collapsable();
     }
 

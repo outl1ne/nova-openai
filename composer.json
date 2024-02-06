@@ -7,9 +7,10 @@
   ],
   "license": "MIT",
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "laravel/nova": "^4.32",
     "nova-kit/nova-packages-tool": "^1.14",
+    "openai-php/laravel": "^0.8.1",
     "outl1ne/nova-translations-loader": "^5.0"
   },
   "require-dev": {
@@ -35,7 +36,10 @@
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
