@@ -3,10 +3,10 @@
 namespace Outl1ne\NovaOpenAI\Resources\Embeddings;
 
 use Exception;
-use Illuminate\Http\Client\Response;
 use Outl1ne\NovaOpenAI\Http;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Resources\Measurable;
+use Outl1ne\NovaOpenAI\Resources\Embeddings\Responses\EmbeddingsResponse;
 
 class CreateEmbedding
 {
@@ -34,7 +34,7 @@ class CreateEmbedding
         return $this->openaiRequest;
     }
 
-    public function makeRequest(string $model, string $input): Response
+    public function makeRequest(string $model, string $input): EmbeddingsResponse
     {
         $this->model = $model;
         $this->input = $input;
@@ -48,22 +48,20 @@ class CreateEmbedding
             ]);
             $response->throw();
 
-            return $this->handleResponse($response);
+            return $this->handleResponse(new EmbeddingsResponse($response));
         } catch (Exception $e) {
             $this->handleException($e);
         }
     }
 
-    protected function handleResponse($response)
+    protected function handleResponse(EmbeddingsResponse $response)
     {
-        $json = $response->json();
-
         $this->openaiRequest->time = $this->measure();
         $this->openaiRequest->status = 'success';
-        $this->openaiRequest->response_object = $json['object'];
-        $this->openaiRequest->output = $json['data'];
-        $this->openaiRequest->usage_prompt_tokens = $json['usage']['prompt_tokens'];
-        $this->openaiRequest->usage_total_tokens = $json['usage']['total_tokens'];
+        $this->openaiRequest->response_object = $response->object;
+        $this->openaiRequest->output = $response->embeddings;
+        $this->openaiRequest->usage_prompt_tokens = $response->usage->promptTokens;
+        $this->openaiRequest->usage_total_tokens = $response->usage->totalTokens;
         $this->openaiRequest->save();
 
         return $response;
@@ -78,5 +76,4 @@ class CreateEmbedding
 
         throw $e;
     }
-
 }
