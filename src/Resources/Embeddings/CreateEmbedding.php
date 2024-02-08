@@ -59,9 +59,16 @@ class CreateEmbedding
         $this->openaiRequest->time = $this->measure();
         $this->openaiRequest->status = 'success';
         $this->openaiRequest->response_object = $response->object;
+        $this->openaiRequest->model_used = $response->modelUsed;
         $this->openaiRequest->output = $response->embeddings;
         $this->openaiRequest->usage_prompt_tokens = $response->usage->promptTokens;
         $this->openaiRequest->usage_total_tokens = $response->usage->totalTokens;
+        $this->openaiRequest->ratelimit_limit_requests = $response->rateLimit->limitRequests;
+        $this->openaiRequest->ratelimit_limit_tokens = $response->rateLimit->limitTokens;
+        $this->openaiRequest->ratelimit_remaining_requests = $response->rateLimit->remainingRequests;
+        $this->openaiRequest->ratelimit_remaining_tokens = $response->rateLimit->remainingTokens;
+        $this->openaiRequest->ratelimit_reset_requests = $response->rateLimit->resetRequests;
+        $this->openaiRequest->ratelimit_reset_tokens = $response->rateLimit->resetTokens;
         $this->openaiRequest->save();
 
         return $response;
