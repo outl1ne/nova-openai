@@ -7,7 +7,7 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Outl1ne\NovaOpenAI\Exceptions\ApiKeyIsMissing;
+use Outl1ne\NovaOpenAI\Exceptions\ApiKeyMissingException;
 
 class NovaOpenAIServiceProvider extends ServiceProvider
 {
@@ -78,7 +78,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
             $headers = config('nova-openai.headers');
 
             if (! is_string($apiKey) || ($organization !== null && ! is_string($organization))) {
-                throw ApiKeyIsMissing::create();
+                throw ApiKeyMissingException::create();
             }
 
             return OpenAI::client($apiKey, $organization, $headers);

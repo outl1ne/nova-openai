@@ -4,7 +4,7 @@ namespace Outl1ne\NovaOpenAI\Exceptions;
 
 use InvalidArgumentException;
 
-class ApiKeyIsMissing extends InvalidArgumentException
+class ApiKeyMissingException extends InvalidArgumentException
 {
     /**
      * Create a new exception instance.
