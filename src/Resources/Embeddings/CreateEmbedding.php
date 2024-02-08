@@ -5,7 +5,7 @@ namespace Outl1ne\NovaOpenAI\Resources\Embeddings;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Outl1ne\NovaOpenAI\Http;
-use Outl1ne\NovaOpenAI\Models\OpenaiRequest;
+use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Resources\Measurable;
 
 class CreateEmbedding
@@ -24,7 +24,7 @@ class CreateEmbedding
     {
         $this->startMeasuring();
 
-        $this->openaiRequest = new OpenaiRequest;
+        $this->openaiRequest = new OpenAIRequest;
         $this->openaiRequest->method = 'embeddings';
         $this->openaiRequest->status = 'pending';
         $this->openaiRequest->model_requested = $this->model;

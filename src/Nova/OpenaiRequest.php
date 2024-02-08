@@ -13,9 +13,9 @@ use Laravel\Nova\Fields\DateTime;
 use Outl1ne\NovaOpenAI\NovaOpenAIConfig;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class OpenaiRequest extends Resource
+class OpenAIRequest extends Resource
 {
-    public static $model = \Outl1ne\NovaOpenAI\Models\OpenaiRequest::class;
+    public static $model = \Outl1ne\NovaOpenAI\Models\OpenAIRequest::class;
     public static $displayInNavigation = false;
 
     public function title()

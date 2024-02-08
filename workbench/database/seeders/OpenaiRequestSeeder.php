@@ -5,7 +5,7 @@ namespace Workbench\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Outl1ne\NovaOpenAI\Facades\OpenAI;
 
-class OpenaiRequestSeeder extends Seeder
+class OpenAIRequestSeeder extends Seeder
 {
     public function run(): void
     {

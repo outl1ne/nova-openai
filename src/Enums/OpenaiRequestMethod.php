@@ -2,7 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Enums;
 
-enum OpenaiRequestMethod: string
+enum OpenAIRequestMethod: string
 {
     case COMPLETIONS = 'completions';
     case CHAT = 'chat';

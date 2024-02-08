@@ -2,7 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Enums;
 
-enum OpenaiRequestStatus: string
+enum OpenAIRequestStatus: string
 {
     case PENDING = 'pending';
     case SUCCESS = 'success';
