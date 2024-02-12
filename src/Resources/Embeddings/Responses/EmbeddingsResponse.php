@@ -13,7 +13,7 @@ class EmbeddingsResponse
     public string $modelUsed;
     public Usage $usage;
     public RateLimit $rateLimit;
-    public array $embeddings;
+    public Embedding $embedding;
 
     public function __construct(
         protected readonly Response $response,
@@ -33,10 +33,7 @@ class EmbeddingsResponse
             $headers['x-ratelimit-reset-requests'][0],
             $headers['x-ratelimit-reset-tokens'][0],
         );
-
-        foreach ($data['data'] as $embedding) {
-            $this->embeddings[] = new Embedding($embedding);
-        }
+        $this->embedding = new Embedding($data['data'][0]);
     }
 
     public function response()

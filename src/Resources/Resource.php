@@ -2,11 +2,12 @@
 
 namespace Outl1ne\NovaOpenAI\Resources;
 
-use Outl1ne\NovaOpenAI\Http;
+use Illuminate\Http\Client\PendingRequest;
 
 class Resource
 {
     public function __construct(
-        protected readonly Http $http,
-    ) {}
+        protected readonly PendingRequest $http,
+    ) {
+    }
 }

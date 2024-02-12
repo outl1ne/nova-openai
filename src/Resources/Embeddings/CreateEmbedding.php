@@ -3,7 +3,7 @@
 namespace Outl1ne\NovaOpenAI\Resources\Embeddings;
 
 use Exception;
-use Outl1ne\NovaOpenAI\Http;
+use Illuminate\Http\Client\PendingRequest;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Resources\Measurable;
 use Outl1ne\NovaOpenAI\Resources\Embeddings\Responses\EmbeddingsResponse;
@@ -17,8 +17,9 @@ class CreateEmbedding
     protected $openaiRequest;
 
     public function __construct(
-        protected readonly Http $http,
-    ) {}
+        protected readonly PendingRequest $http,
+    ) {
+    }
 
     public function pending()
     {
@@ -42,7 +43,7 @@ class CreateEmbedding
         $this->pending();
 
         try {
-            $response = $this->http->client()->withHeader('Content-Type', 'application/json')->post('embeddings', [
+            $response = $this->http->withHeader('Content-Type', 'application/json')->post('embeddings', [
                 'model' => $this->model,
                 'input' => $this->input,
             ]);
@@ -60,7 +61,7 @@ class CreateEmbedding
         $this->openaiRequest->status = 'success';
         $this->openaiRequest->response_object = $response->object;
         $this->openaiRequest->model_used = $response->modelUsed;
-        $this->openaiRequest->output = $response->embeddings;
+        $this->openaiRequest->output = $response->embedding;
         $this->openaiRequest->usage_prompt_tokens = $response->usage->promptTokens;
         $this->openaiRequest->usage_total_tokens = $response->usage->totalTokens;
         $this->openaiRequest->ratelimit_limit_requests = $response->rateLimit->limitRequests;

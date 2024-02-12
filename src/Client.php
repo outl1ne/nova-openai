@@ -2,16 +2,22 @@
 
 namespace Outl1ne\NovaOpenAI;
 
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
 use Outl1ne\NovaOpenAI\Resources\Embeddings\Embeddings;
 
 class Client
 {
+    public readonly PendingRequest $http;
+
     /**
      * Creates a Client instance with the given API token.
      */
-    public function __construct(protected readonly Http $http)
-    {
-        // ..
+    public function __construct(
+        protected readonly string $baseUrl,
+        protected readonly array $headers,
+    ) {
+        $this->http = Http::baseUrl($this->baseUrl)->withHeaders($this->headers);
     }
 
     /**

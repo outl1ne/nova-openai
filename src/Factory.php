@@ -99,8 +99,6 @@ class Factory
 
         $baseUrl = rtrim($this->baseUrl ?: 'https://api.openai.com/v1', '/') . '/';
 
-        $http = new Http($baseUrl, $headers);
-
-        return new Client($http);
+        return new Client($baseUrl, $headers);
     }
 }
