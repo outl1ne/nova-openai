@@ -19,8 +19,8 @@ return new class extends Migration
             $table->unsignedDecimal('time', 10, 4)->nullable()->index();
             $table->string('model_requested')->nullable()->index();
             $table->string('model_used')->nullable()->index();
-            $table->json('input')->nullable();
-            $table->json('output')->nullable();
+            $table->jsonb('input')->nullable();
+            $table->jsonb('output')->nullable();
             $table->string('response_id')->nullable()->index();
             $table->string('response_object')->nullable()->index();
             $table->unsignedBigInteger('response_created')->nullable()->index();
