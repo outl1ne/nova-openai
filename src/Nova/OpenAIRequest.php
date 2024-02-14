@@ -10,8 +10,9 @@ use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\DateTime;
-use Outl1ne\NovaOpenAI\NovaOpenAIConfig;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaOpenAI\Enums\OpenAIRequestMethod;
+use Outl1ne\NovaOpenAI\Enums\OpenAIRequestStatus;
 
 class OpenAIRequest extends Resource
 {
@@ -57,16 +58,16 @@ class OpenAIRequest extends Resource
 
             Badge::make('Status')
                 ->types([
-                    NovaOpenAIConfig::enum('openai_request_status')::PENDING->value => 'bg-zinc-600 text-zinc-200',
-                    NovaOpenAIConfig::enum('openai_request_status')::SUCCESS->value => 'bg-emerald-600 text-emerald-200',
-                    NovaOpenAIConfig::enum('openai_request_status')::ERROR->value => 'bg-rose-600 text-rose-200',
+                    OpenAIRequestStatus::PENDING->value => 'bg-zinc-600 text-zinc-200',
+                    OpenAIRequestStatus::SUCCESS->value => 'bg-emerald-600 text-emerald-200',
+                    OpenAIRequestStatus::ERROR->value => 'bg-rose-600 text-rose-200',
                 ])->sortable(),
             Badge::make('Method')
                 ->types([
-                    NovaOpenAIConfig::enum('openai_request_method')::COMPLETIONS->value => 'bg-slate-600 text-slate-200',
-                    NovaOpenAIConfig::enum('openai_request_method')::CHAT->value => 'bg-sky-600 text-sky-200',
-                    NovaOpenAIConfig::enum('openai_request_method')::EMBEDDINGS->value => 'bg-amber-600 text-amber-200',
-                    NovaOpenAIConfig::enum('openai_request_method')::AUDIO->value => 'bg-fuchsia-600 text-fuchsia-200',
+                    OpenAIRequestMethod::COMPLETIONS->value => 'bg-slate-600 text-slate-200',
+                    OpenAIRequestMethod::CHAT->value => 'bg-sky-600 text-sky-200',
+                    OpenAIRequestMethod::EMBEDDINGS->value => 'bg-amber-600 text-amber-200',
+                    OpenAIRequestMethod::AUDIO->value => 'bg-fuchsia-600 text-fuchsia-200',
                 ])->sortable(),
             Text::make('Request time', 'time')->sortable()->displayUsing(fn () => "{$this->time} ms"),
             Text::make('Model requested', 'model_requested')->sortable(),
