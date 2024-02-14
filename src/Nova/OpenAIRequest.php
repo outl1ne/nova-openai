@@ -127,15 +127,9 @@ class OpenAIRequest extends Resource
         return [];
     }
 
-    protected function jsonToText($data): ?string
+    protected function jsonToText($data): string
     {
-        return $this->truncate(is_array($data) ? json_encode($data) : $data);
-    }
-
-    protected function truncate(?string $string): ?string
-    {
-        if ($string === null) return null;
-        return Str::limit($string, 50);
+        return Str::of(is_array($data) ? json_encode($data) : $data)->limit(50);
     }
 
     public static function authorizedToCreate(Request $request)
