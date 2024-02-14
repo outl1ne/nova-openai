@@ -24,14 +24,18 @@ class EmbeddingsResponse
         $this->object = $data['object'];
         $this->model = $data['model'];
         $this->modelUsed = $headers['openai-model'][0];
-        $this->usage = new Usage($data['usage']['prompt_tokens'], null, $data['usage']['total_tokens']);
+        $this->usage = new Usage(
+            promptTokens: $data['usage']['prompt_tokens'],
+            completionTokens: null,
+            totalTokens: $data['usage']['total_tokens']
+        );
         $this->rateLimit = new RateLimit(
-            $headers['x-ratelimit-limit-requests'][0],
-            $headers['x-ratelimit-limit-tokens'][0],
-            $headers['x-ratelimit-remaining-requests'][0],
-            $headers['x-ratelimit-remaining-tokens'][0],
-            $headers['x-ratelimit-reset-requests'][0],
-            $headers['x-ratelimit-reset-tokens'][0],
+            limitRequests: $headers['x-ratelimit-limit-requests'][0],
+            limitTokens: $headers['x-ratelimit-limit-tokens'][0],
+            remainingRequests: $headers['x-ratelimit-remaining-requests'][0],
+            remainingTokens: $headers['x-ratelimit-remaining-tokens'][0],
+            resetRequests: $headers['x-ratelimit-reset-requests'][0],
+            resetTokens: $headers['x-ratelimit-reset-tokens'][0],
         );
         $this->embedding = new Embedding($data['data'][0]);
     }
