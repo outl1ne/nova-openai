@@ -14,7 +14,7 @@ class CreateEmbedding
 
     protected $model;
     protected $input;
-    protected $openaiRequest;
+    protected $request;
 
     public function __construct(
         protected readonly PendingRequest $http,
@@ -25,14 +25,14 @@ class CreateEmbedding
     {
         $this->measure();
 
-        $this->openaiRequest = new OpenAIRequest;
-        $this->openaiRequest->method = 'embeddings';
-        $this->openaiRequest->status = 'pending';
-        $this->openaiRequest->model_requested = $this->model;
-        $this->openaiRequest->input = $this->input;
-        $this->openaiRequest->save();
+        $this->request = new OpenAIRequest;
+        $this->request->method = 'embeddings';
+        $this->request->status = 'pending';
+        $this->request->model_requested = $this->model;
+        $this->request->input = $this->input;
+        $this->request->save();
 
-        return $this->openaiRequest;
+        return $this->request;
     }
 
     public function makeRequest(string $model, string $input): EmbeddingsResponse
@@ -57,24 +57,24 @@ class CreateEmbedding
 
     protected function handleResponse(EmbeddingsResponse $response)
     {
-        $this->openaiRequest->time = $this->measure();
-        $this->openaiRequest->status = 'success';
-        $this->openaiRequest->response_object = $response->object;
-        $this->openaiRequest->model_used = $response->modelUsed;
-        $this->openaiRequest->output = $response->embedding;
-        $this->openaiRequest->usage_prompt_tokens = $response->usage->promptTokens;
-        $this->openaiRequest->usage_total_tokens = $response->usage->totalTokens;
-        $this->openaiRequest->save();
+        $this->request->time = $this->measure();
+        $this->request->status = 'success';
+        $this->request->response_object = $response->object;
+        $this->request->model_used = $response->modelUsed;
+        $this->request->output = $response->embedding;
+        $this->request->usage_prompt_tokens = $response->usage->promptTokens;
+        $this->request->usage_total_tokens = $response->usage->totalTokens;
+        $this->request->save();
 
         return $response;
     }
 
     public function handleException(Exception $e)
     {
-        $this->openaiRequest->time = $this->measure();
-        $this->openaiRequest->status = 'error';
-        $this->openaiRequest->error = $e->getMessage();
-        $this->openaiRequest->save();
+        $this->request->time = $this->measure();
+        $this->request->status = 'error';
+        $this->request->error = $e->getMessage();
+        $this->request->save();
 
         throw $e;
     }
