@@ -2,8 +2,12 @@
 
 namespace Outl1ne\NovaOpenAI\Enums;
 
+use Outl1ne\NovaOpenAI\Traits\EnumOptions;
+
 enum OpenAIRequestMethod: string
 {
+    use EnumOptions;
+
     case COMPLETIONS = 'completions';
     case CHAT = 'chat';
     case EMBEDDINGS = 'embeddings';
@@ -20,7 +24,7 @@ enum OpenAIRequestMethod: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::COMPLETIONS => 'Completions',
             self::CHAT => 'Chat',
             self::EMBEDDINGS => 'Embeddings',
@@ -35,16 +39,5 @@ enum OpenAIRequestMethod: string
             self::ASSISTANTS => 'Assistants',
             self::THREADS => 'Threads',
         };
-    }
-
-    public static function options(): array
-    {
-        $options = [];
-
-        foreach (self::cases() as $case) {
-            $options[$case->value] = $case->label();
-        }
-
-        return $options;
     }
 }
