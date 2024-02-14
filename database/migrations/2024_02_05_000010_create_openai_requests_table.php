@@ -32,7 +32,7 @@ return new class extends Migration
             $table->string('response_format')->nullable();
             $table->string('media_speed')->nullable();
             $table->string('language')->nullable();
-            $table->decimal('temperature', 11, 10)->nullable();
+            $table->decimal('temperature', 2, 1)->nullable();
             $table->string('error')->nullable();
 
             $table->timestamps();
