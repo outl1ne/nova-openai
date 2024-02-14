@@ -30,17 +30,8 @@ class OpenAIRequest extends Resource
      */
     public static $search = [
         'id',
-        'method',
-        'status',
-        'time',
-        'model_requested',
-        'model_used',
-        'time',
         'input',
         'output',
-        'response_format',
-        'response_object',
-        'error',
     ];
 
     /**
