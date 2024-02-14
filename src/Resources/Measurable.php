@@ -6,15 +6,31 @@ use Outl1ne\NovaOpenAI\Http;
 
 trait Measurable
 {
-    protected $measureStart;
+    protected $measureStart = null;
 
-    protected function startMeasuring()
+    /**
+     * Measures time passed from initial measure() call and returns
+     * time pass in seconds.
+     *
+     * @return float|null
+     */
+    protected function measure(): float|null
     {
-        $this->measureStart = microtime(true);
+        $measuringStarted = !!$this->measureStart;
+
+        if ($this->measureStart === null) {
+            $this->measureStart = microtime(true);
+        }
+
+        if (!$measuringStarted) {
+            return null;
+        }
+
+        return microtime(true) - $this->measureStart;
     }
 
-    protected function measure(): float
+    protected function clearMeasure(): void
     {
-        return microtime(true) - $this->measureStart;
+        $this->measureStart = null;
     }
 }

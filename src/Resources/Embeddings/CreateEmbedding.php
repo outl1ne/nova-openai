@@ -23,7 +23,7 @@ class CreateEmbedding
 
     public function pending()
     {
-        $this->startMeasuring();
+        $this->measure();
 
         $this->openaiRequest = new OpenAIRequest;
         $this->openaiRequest->method = 'embeddings';
