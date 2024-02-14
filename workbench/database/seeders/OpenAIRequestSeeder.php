@@ -19,7 +19,7 @@ class OpenAIRequestSeeder extends Seeder
             //         ],
             //     ],
             // ]);
-            OpenAI::embeddings()->create('text-embedding-3-small', 'The food was delicious and the waiter...');
+            // OpenAI::embeddings()->create('text-embedding-3-small', 'The food was delicious and the waiter...');
         }
         // OpenAI::audio()->speech([
         //     'model' => 'tts-1',
