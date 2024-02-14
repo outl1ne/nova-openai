@@ -34,12 +34,6 @@ return new class extends Migration
             $table->string('language')->nullable();
             $table->decimal('temperature', 11, 10)->nullable();
             $table->string('error')->nullable();
-            $table->unsignedBigInteger('ratelimit_limit_requests')->nullable();
-            $table->unsignedBigInteger('ratelimit_limit_tokens')->nullable();
-            $table->unsignedBigInteger('ratelimit_remaining_requests')->nullable();
-            $table->unsignedBigInteger('ratelimit_remaining_tokens')->nullable();
-            $table->string('ratelimit_reset_requests')->nullable();
-            $table->string('ratelimit_reset_tokens')->nullable();
 
             $table->timestamps();
         });
