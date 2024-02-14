@@ -69,7 +69,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::EMBEDDINGS->value => 'bg-amber-600 text-amber-200',
                     OpenAIRequestMethod::AUDIO->value => 'bg-fuchsia-600 text-fuchsia-200',
                 ])->sortable(),
-            Text::make('Request time', 'time')->sortable()->displayUsing(fn () => "{$this->time} ms"),
+            Text::make('Request time', 'time')->sortable()->displayUsing(fn () => "{$this->time} sec"),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
             Text::make('Tokens', 'usage_total_tokens')->sortable(),
