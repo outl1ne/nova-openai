@@ -2,12 +2,13 @@
 
 namespace Outl1ne\NovaOpenAI;
 
-use Illuminate\Support\Facades\Http;
 use Laravel\Nova\Nova;
+use Illuminate\Support\Facades\Http;
 use Laravel\Nova\Events\ServingNova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Outl1ne\NovaOpenAI\Exceptions\ApiKeyMissingException;
+use Outl1ne\NovaOpenAI\Exceptions\OrganizationInvalidException;
 
 class NovaOpenAIServiceProvider extends ServiceProvider
 {
@@ -40,8 +41,8 @@ class NovaOpenAIServiceProvider extends ServiceProvider
         });
 
         Nova::serving(function (ServingNova $event) {
-            Nova::script('nova-openai', __DIR__.'/../dist/js/entry.js');
-            Nova::style('nova-openai', __DIR__.'/../dist/css/entry.css');
+            Nova::script('nova-openai', __DIR__ . '/../dist/js/entry.js');
+            Nova::style('nova-openai', __DIR__ . '/../dist/css/entry.css');
         });
     }
 
@@ -59,8 +60,8 @@ class NovaOpenAIServiceProvider extends ServiceProvider
         }
 
         Route::middleware(['nova'])
-                ->prefix('nova-vendor/nova-openai')
-                ->group(__DIR__.'/../routes/api.php');
+            ->prefix('nova-vendor/nova-openai')
+            ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**
@@ -72,17 +73,25 @@ class NovaOpenAIServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/nova-openai.php', 'nova-openai');
 
-        $this->app->singleton(Client::class, static function (): Client {
+        $this->app->singleton(OpenAI::class, static function (): OpenAI {
             $apiKey = config('nova-openai.api_key');
             $organization = config('nova-openai.organization');
             $headers = config('nova-openai.headers');
 
-            if (! is_string($apiKey) || ($organization !== null && ! is_string($organization))) {
+            if (!is_string($apiKey)) {
                 throw ApiKeyMissingException::create();
             }
 
-            return OpenAI::client($apiKey, $organization, $headers);
+            if ($organization !== null && !is_string($organization)) {
+                throw OrganizationInvalidException::create();
+            }
+
+            return (new Factory())
+                ->withApiKey($apiKey)
+                ->withOrganization($organization)
+                ->withHttpHeaders($headers)
+                ->make();
         });
-        $this->app->alias(Client::class, 'nova-openai');
+        $this->app->alias(OpenAI::class, 'nova-openai');
     }
 }

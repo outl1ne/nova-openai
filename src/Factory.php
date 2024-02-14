@@ -50,7 +50,7 @@ class Factory
      * Sets the base URL for the requests.
      * If no URL is provided the factory will use the default OpenAI API URL.
      */
-    public function withbaseUrl(string $baseUrl): self
+    public function withBaseUrl(string $baseUrl): self
     {
         $this->baseUrl = $baseUrl;
 
@@ -85,7 +85,7 @@ class Factory
     /**
      * Creates a new Open AI Client.
      */
-    public function make(): Client
+    public function make(): OpenAI
     {
         $headers = $this->headers;
 
@@ -99,6 +99,6 @@ class Factory
 
         $baseUrl = rtrim($this->baseUrl ?: 'https://api.openai.com/v1', '/') . '/';
 
-        return new Client($baseUrl, $headers);
+        return new OpenAI($baseUrl, $headers);
     }
 }

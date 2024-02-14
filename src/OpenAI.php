@@ -2,25 +2,31 @@
 
 namespace Outl1ne\NovaOpenAI;
 
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Http;
+use Outl1ne\NovaOpenAI\Resources\Embeddings\Embeddings;
+
 class OpenAI
 {
+    public readonly PendingRequest $http;
+
     /**
-     * Creates a new Open AI Client with the given API token.
+     * Creates a Client instance with the given API token.
      */
-    public static function client(string $apiKey, ?string $organization = null, ?array $headers): Client
-    {
-        return self::factory()
-            ->withApiKey($apiKey)
-            ->withOrganization($organization)
-            ->withHttpHeaders($headers)
-            ->make();
+    public function __construct(
+        protected readonly string $baseUrl,
+        protected readonly array $headers,
+    ) {
+        $this->http = Http::baseUrl($this->baseUrl)->withHeaders($this->headers);
     }
 
     /**
-     * Creates a new factory instance to configure a custom Open AI Client
+     * Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.
+     *
+     * @see https://platform.openai.com/docs/api-reference/embeddings
      */
-    public static function factory(): Factory
+    public function embeddings(): Embeddings
     {
-        return new Factory();
+        return new Embeddings($this->http);
     }
 }
