@@ -79,11 +79,11 @@ class NovaOpenAIServiceProvider extends ServiceProvider
             $headers = config('nova-openai.headers');
 
             if (!is_string($apiKey)) {
-                throw ApiKeyMissingException::create();
+                throw new ApiKeyMissingException;
             }
 
             if ($organization !== null && !is_string($organization)) {
-                throw OrganizationInvalidException::create();
+                throw new OrganizationInvalidException;
             }
 
             return (new Factory())
