@@ -2,8 +2,6 @@
 
 namespace Outl1ne\NovaOpenAI\Resources;
 
-use Outl1ne\NovaOpenAI\Http;
-
 trait Measurable
 {
     protected $measureStart = null;
