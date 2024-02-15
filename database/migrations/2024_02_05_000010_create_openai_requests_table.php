@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('openai_requests', function (Blueprint $table) {
             $table->id();
 
-            $table->enum('method', ['completions', 'chat', 'embeddings', 'audio', 'edits', 'files', 'models', 'fineTuning', 'fineTunes', 'moderations', 'images', 'assistants', 'threads'])->nullable()->index();
-            $table->enum('status', ['pending', 'success', 'error'])->index();
+            $table->string('method')->nullable()->index();
+            $table->string('status')->index();
             $table->unsignedDecimal('time', 10, 4)->nullable();
             $table->string('model_requested')->nullable();
             $table->string('model_used')->nullable();
