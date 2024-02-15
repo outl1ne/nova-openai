@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('method')->nullable()->index();
             $table->string('status')->index();
-            $table->unsignedDecimal('time', 10, 4)->nullable();
+            $table->unsignedDecimal('time_sec', 10, 4)->nullable();
             $table->string('model_requested')->nullable();
             $table->string('model_used')->nullable();
             $table->jsonb('input')->nullable();

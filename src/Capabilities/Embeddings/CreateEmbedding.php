@@ -57,7 +57,7 @@ class CreateEmbedding
 
     protected function handleResponse(EmbeddingsResponse $response)
     {
-        $this->request->time = $this->measure();
+        $this->request->time_sec = $this->measure();
         $this->request->status = 'success';
         $this->request->meta = [
             'object' => $response->object
@@ -73,7 +73,7 @@ class CreateEmbedding
 
     public function handleException(Exception $e)
     {
-        $this->request->time = $this->measure();
+        $this->request->time_sec = $this->measure();
         $this->request->status = 'error';
         $this->request->error = $e->getMessage();
         $this->request->save();
