@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Embeddings\Responses;
+namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses;
 
 class Embedding
 {

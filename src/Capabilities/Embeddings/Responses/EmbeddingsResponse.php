@@ -1,10 +1,10 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Embeddings\Responses;
+namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses;
 
 use Illuminate\Http\Client\Response;
-use Outl1ne\NovaOpenAI\Resources\Responses\Usage;
-use Outl1ne\NovaOpenAI\Resources\Responses\RateLimit;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Usage;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\RateLimit;
 
 class EmbeddingsResponse
 {

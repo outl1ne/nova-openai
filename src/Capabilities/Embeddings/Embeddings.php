@@ -1,10 +1,11 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Embeddings;
+namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings;
 
-use Outl1ne\NovaOpenAI\Resources\Resource;
+use Outl1ne\NovaOpenAI\Capabilities\Capability;
 
-class Embeddings extends Resource
+
+class Embeddings extends Capability
 {
     public function create(string $model, string $input)
     {

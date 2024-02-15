@@ -5,7 +5,7 @@ namespace Outl1ne\NovaOpenAI\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \OpenAI\Resources\Embeddings\Embeddings embeddings()
+ * @method static \OpenAI\Capabilities\Embeddings\Embeddings embeddings()
  */
 final class OpenAI extends Facade
 {

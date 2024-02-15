@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources;
+namespace Outl1ne\NovaOpenAI\Capabilities;
 
 trait Measurable
 {

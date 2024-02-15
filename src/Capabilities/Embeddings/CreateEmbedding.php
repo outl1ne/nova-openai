@@ -1,12 +1,12 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Embeddings;
+namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings;
 
 use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
-use Outl1ne\NovaOpenAI\Resources\Measurable;
-use Outl1ne\NovaOpenAI\Resources\Embeddings\Responses\EmbeddingsResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Measurable;
+use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses\EmbeddingsResponse;
 
 class CreateEmbedding
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Responses;
+namespace Outl1ne\NovaOpenAI\Capabilities\Responses;
 
 class Usage
 {
@@ -8,5 +8,6 @@ class Usage
         public readonly int $promptTokens,
         public readonly ?int $completionTokens,
         public readonly int $totalTokens
-    ) {}
+    ) {
+    }
 }

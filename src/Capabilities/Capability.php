@@ -1,10 +1,10 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources;
+namespace Outl1ne\NovaOpenAI\Capabilities;
 
 use Illuminate\Http\Client\PendingRequest;
 
-class Resource
+class Capability
 {
     public function __construct(
         protected readonly PendingRequest $http,

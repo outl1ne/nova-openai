@@ -4,7 +4,7 @@ namespace Outl1ne\NovaOpenAI;
 
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
-use Outl1ne\NovaOpenAI\Resources\Embeddings\Embeddings;
+use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings;
 
 class OpenAI
 {

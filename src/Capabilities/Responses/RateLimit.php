@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Resources\Responses;
+namespace Outl1ne\NovaOpenAI\Capabilities\Responses;
 
 class RateLimit
 {
@@ -11,5 +11,6 @@ class RateLimit
         public readonly int $remainingTokens,
         public readonly string $resetRequests,
         public readonly string $resetTokens,
-    ) {}
+    ) {
+    }
 }
