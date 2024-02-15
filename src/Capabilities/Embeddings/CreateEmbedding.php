@@ -59,7 +59,9 @@ class CreateEmbedding
     {
         $this->request->time = $this->measure();
         $this->request->status = 'success';
-        $this->request->response_object = $response->object;
+        $this->request->meta = [
+            'object' => $response->object
+        ];
         $this->request->model_used = $response->modelUsed;
         $this->request->output = $response->embedding;
         $this->request->usage_prompt_tokens = $response->usage->promptTokens;

@@ -77,8 +77,8 @@ class OpenAIRequest extends Resource
             Text::make('Output', 'output')->displayUsing(fn () => $this->jsonToText($this->output))->onlyOnIndex(),
             Code::make('Input', 'input')->json(),
             Code::make('Output', 'output')->json(),
+            Code::make('Meta', 'meta')->json(),
             Text::make('Error', 'error')->hideFromIndex(),
-            Text::make('Object', 'response_object'),
             DateTime::make('Created at'),
         ];
     }

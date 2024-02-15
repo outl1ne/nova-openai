@@ -21,18 +21,10 @@ return new class extends Migration
             $table->string('model_used')->nullable();
             $table->jsonb('input')->nullable();
             $table->jsonb('output')->nullable();
-            $table->string('response_id')->nullable();
-            $table->string('response_object')->nullable();
-            $table->unsignedBigInteger('response_created')->nullable();
-            $table->string('response_system_fingerprint')->nullable();
+            $table->jsonb('meta')->nullable();
             $table->unsignedBigInteger('usage_prompt_tokens')->nullable();
             $table->unsignedBigInteger('usage_completion_tokens')->nullable();
             $table->unsignedBigInteger('usage_total_tokens')->nullable();
-            $table->string('voice')->nullable();
-            $table->string('response_format')->nullable();
-            $table->string('media_speed')->nullable();
-            $table->string('language')->nullable();
-            $table->decimal('temperature', 2, 1)->nullable();
             $table->string('error')->nullable();
 
             $table->timestamps();

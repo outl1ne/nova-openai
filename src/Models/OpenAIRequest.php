@@ -11,5 +11,6 @@ class OpenAIRequest extends Model
     protected $casts = [
         'input' => 'array',
         'output' => 'array',
+        'meta' => 'array',
     ];
 }
