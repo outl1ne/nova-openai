@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('model_used')->nullable();
             $table->jsonb('input')->nullable();
             $table->jsonb('output')->nullable();
+            $table->jsonb('arguments')->nullable();
             $table->jsonb('meta')->nullable();
             $table->unsignedBigInteger('usage_prompt_tokens')->nullable();
             $table->unsignedBigInteger('usage_completion_tokens')->nullable();

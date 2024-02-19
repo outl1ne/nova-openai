@@ -11,6 +11,21 @@ class OpenAIRequest extends Model
     protected $casts = [
         'input' => 'array',
         'output' => 'array',
+        'arguments' => 'array',
         'meta' => 'array',
     ];
+
+    public function appendArgument(string $key, $value)
+    {
+        if ($value === null) {
+            return false;
+        }
+
+        $this->arguments = [
+            ...$this->arguments,
+            $key => $value,
+        ];
+
+        return true;
+    }
 }

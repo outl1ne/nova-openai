@@ -12,40 +12,40 @@ class CreateEmbedding
 {
     use Measurable;
 
-    protected $model;
-    protected $input;
-    protected $request;
+    protected OpenAIRequest $request;
 
     public function __construct(
         protected readonly PendingRequest $http,
     ) {
+        $this->request = new OpenAIRequest;
+        $this->request->method = 'embeddings';
+        $this->request->arguments = [];
     }
 
     public function pending()
     {
         $this->measure();
 
-        $this->request = new OpenAIRequest;
-        $this->request->method = 'embeddings';
         $this->request->status = 'pending';
-        $this->request->model_requested = $this->model;
-        $this->request->input = $this->input;
         $this->request->save();
 
         return $this->request;
     }
 
-    public function makeRequest(string $model, string $input): EmbeddingsResponse
+    public function makeRequest(string $model, string $input, ?string $encodingFormat = null, ?int $dimensions = null, ?string $user = null): EmbeddingsResponse
     {
-        $this->model = $model;
-        $this->input = $input;
+        $this->request->model_requested = $model;
+        $this->request->input = $input;
+        $this->request->appendArgument('encoding_format', $encodingFormat);
+        $this->request->appendArgument('dimensions', $dimensions);
+        $this->request->appendArgument('user', $user);
 
         $this->pending();
 
         try {
             $response = $this->http->withHeader('Content-Type', 'application/json')->post('embeddings', [
-                'model' => $this->model,
-                'input' => $this->input,
+                'model' => $model,
+                'input' => $input,
             ]);
             $response->throw();
 
