@@ -32,7 +32,9 @@ purge:
     - public/vendor/*
 
 env:
-  - DB_CONNECTION=mysql
+  - DB_CONNECTION=pgsql
   - DB_DATABASE=nova_openai
   - DB_USERNAME=root
   - DB_PASSWORD=
+  - OPENAI_API_KEY=xxxx
+  - OPENAI_ORGANIZATION=xxxx
