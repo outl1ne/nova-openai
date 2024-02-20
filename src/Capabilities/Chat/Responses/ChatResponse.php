@@ -1,22 +1,21 @@
 <?php
 
-namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses;
+namespace Outl1ne\NovaOpenAI\Capabilities\Chat\Responses;
 
 use Illuminate\Http\Client\Response;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Usage;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\RateLimit;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
 
-class EmbeddingsResponse
+class ChatResponse
 {
     use AppendsMeta;
 
     public string $object;
     public string $model;
-    public string $modelUsed;
+    public array $choices;
     public Usage $usage;
     public RateLimit $rateLimit;
-    public Embedding $embedding;
 
     public function __construct(
         protected readonly Response $response,
@@ -25,10 +24,13 @@ class EmbeddingsResponse
         $headers = $response->headers();
 
         $this->model = $data['model'];
+        $this->choices = $data['choices'];
+        $this->appendMeta('id', $data['id']);
         $this->appendMeta('object', $data['object']);
+        $this->appendMeta('system_fingerprint', $data['system_fingerprint']);
         $this->usage = new Usage(
             promptTokens: $data['usage']['prompt_tokens'],
-            completionTokens: null,
+            completionTokens: $data['usage']['completion_tokens'],
             totalTokens: $data['usage']['total_tokens'],
         );
         $this->rateLimit = new RateLimit(
@@ -39,7 +41,6 @@ class EmbeddingsResponse
             resetRequests: $headers['x-ratelimit-reset-requests'][0],
             resetTokens: $headers['x-ratelimit-reset-tokens'][0],
         );
-        $this->embedding = new Embedding($data['data'][0]);
     }
 
     public function response()
