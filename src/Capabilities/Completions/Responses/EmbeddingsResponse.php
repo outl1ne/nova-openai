@@ -5,12 +5,9 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses;
 use Illuminate\Http\Client\Response;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Usage;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\RateLimit;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
 
 class EmbeddingsResponse
 {
-    use AppendsMeta;
-
     public string $object;
     public string $model;
     public string $modelUsed;
@@ -24,12 +21,13 @@ class EmbeddingsResponse
         $data = $response->json();
         $headers = $response->headers();
 
+        $this->object = $data['object'];
         $this->model = $data['model'];
-        $this->appendMeta('object', $data['object']);
+        $this->modelUsed = $headers['openai-model'][0];
         $this->usage = new Usage(
             promptTokens: $data['usage']['prompt_tokens'],
             completionTokens: null,
-            totalTokens: $data['usage']['total_tokens'],
+            totalTokens: $data['usage']['total_tokens']
         );
         $this->rateLimit = new RateLimit(
             limitRequests: $headers['x-ratelimit-limit-requests'][0],

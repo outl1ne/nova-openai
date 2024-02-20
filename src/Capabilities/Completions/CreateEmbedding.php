@@ -46,7 +46,6 @@ class CreateEmbedding
             $response = $this->http->withHeader('Content-Type', 'application/json')->post('embeddings', [
                 'model' => $model,
                 'input' => $input,
-                ...$this->request->arguments,
             ]);
             $response->throw();
 
@@ -60,8 +59,10 @@ class CreateEmbedding
     {
         $this->request->time_sec = $this->measure();
         $this->request->status = 'success';
-        $this->request->meta = $response->meta;
-        $this->request->model_used = $response->model;
+        $this->request->meta = [
+            'object' => $response->object
+        ];
+        $this->request->model_used = $response->modelUsed;
         $this->request->output = $response->embedding;
         $this->request->usage_prompt_tokens = $response->usage->promptTokens;
         $this->request->usage_total_tokens = $response->usage->totalTokens;
