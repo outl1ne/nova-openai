@@ -29,7 +29,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../config/nova-openai.php' => config_path('nova-openai.php'),
-        ], 'config');
+        ], 'nova-openai-config');
 
         // Register resources
         Nova::resources(array_filter([

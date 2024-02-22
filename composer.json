@@ -1,9 +1,10 @@
 {
   "name": "outl1ne/nova-openai",
-  "description": "Abstraction layer to store OpenAI communication, pricing and to present it in Laravel Nova environment.",
+  "description": "OpenAI SDK for a Laravel application that also stores OpenAI communication and presents it in a Laravel Nova admin panel.",
   "keywords": [
     "laravel",
-    "nova"
+    "nova",
+    "openai"
   ],
   "license": "MIT",
   "require": {
