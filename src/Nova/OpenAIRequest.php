@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestMethod;
@@ -46,6 +47,16 @@ class OpenAIRequest extends Resource
     }
 
     /**
+     * Get the URI key for the dashboard.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'openai-requests';
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -69,6 +80,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::EMBEDDINGS->value => 'bg-amber-600 text-amber-200',
                     OpenAIRequestMethod::AUDIO->value => 'bg-fuchsia-600 text-fuchsia-200',
                 ])->sortable(),
+            Number::make('Cost', 'cost')->sortable()->displayUsing(fn ($value) => $value === null ? null : '$' . number_format($value, 4)),
             Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn () => "{$this->time_sec} sec"),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
@@ -92,7 +104,9 @@ class OpenAIRequest extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            new CostMetrics,
+        ];
     }
 
     /**

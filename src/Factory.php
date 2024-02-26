@@ -27,6 +27,11 @@ class Factory
     protected array $headers = [];
 
     /**
+     * The pricing configuration to calculate the cost of requests.
+     */
+    protected ?object $pricing = null;
+
+    /**
      * Sets the API key for the requests.
      */
     public function withApiKey(string $apiKey): self
@@ -83,6 +88,16 @@ class Factory
     }
 
     /**
+     * Adds a pricing configuration.
+     */
+    public function withPricing(object $pricing): self
+    {
+        $this->pricing = $pricing;
+
+        return $this;
+    }
+
+    /**
      * Creates a new Open AI Client.
      */
     public function make(): OpenAI
@@ -99,6 +114,6 @@ class Factory
 
         $baseUrl = rtrim($this->baseUrl ?: 'https://api.openai.com/v1', '/') . '/';
 
-        return new OpenAI($baseUrl, $headers);
+        return new OpenAI($baseUrl, $headers, $this->pricing);
     }
 }
