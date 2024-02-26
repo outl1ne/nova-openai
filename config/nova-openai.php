@@ -36,4 +36,15 @@ return [
     'headers' => [
         'OpenAI-Beta' => 'assistants=v1',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pricing configuration
+    |--------------------------------------------------------------------------
+    |
+    | Path to the pricing configuration file to be used to calculate
+    | the cost of requests made against OpenAI API.
+    */
+
+    'pricing' => null,
 ];

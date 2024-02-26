@@ -1,0 +1,102 @@
+{
+  "models": {
+    "gpt-4-0125-preview": {
+      "input": 0.01,
+      "output": 0.03
+    },
+    "gpt-4-1106-preview": {
+      "input": 0.01,
+      "output": 0.03
+    },
+    "gpt-4-1106-vision-preview": {
+      "input": 0.01,
+      "output": 0.03
+    },
+    "gpt-4": {
+      "input": 0.03,
+      "output": 0.06
+    },
+    "gpt-4-32k": {
+      "input": 0.06,
+      "output": 0.12
+    },
+    "gpt-3.5-turbo-0125": {
+      "input": 0.0005,
+      "output": 0.0015
+    },
+    "gpt-3.5-turbo-instruct": {
+      "input": 0.0015,
+      "output": 0.002
+    },
+    "gpt-3.5-turbo-1106": {
+      "input": 0.001,
+      "output": 0.002
+    },
+    "gpt-3.5-turbo-0613": {
+      "input": 0.0015,
+      "output": 0.002
+    },
+    "gpt-3.5-turbo-16k-0613": {
+      "input": 0.003,
+      "output": 0.004
+    },
+    "gpt-3.5-turbo-0301": {
+      "input": 0.0015,
+      "output": 0.002
+    }
+  },
+  "assistants": {
+    "code-interpreter": {
+      "input": 0.03
+    },
+    "retrieval": {
+      "input": 0.2
+    }
+  },
+  "fine-tuning": {
+    "gpt-3.5-turbo": {
+      "training": 0.008,
+      "input": 0.003,
+      "output": 0.006
+    },
+    "davinci-002": {
+      "training": 0.006,
+      "input": 0.012,
+      "output": 0.012
+    },
+    "babbage-002": {
+      "training": 0.0004,
+      "input": 0.0016,
+      "output": 0.0016
+    }
+  },
+  "embedding": {
+    "text-embedding-3-small": 0.00002,
+    "text-embedding-3-large": 0.00013,
+    "ada-v2": 0.0001
+  },
+  "base-models": {
+    "davinci-002": 0.002,
+    "babbage-002": 0.0004
+  },
+  "image": {
+    "dall-e-3": {
+      "standard-1024-1024": 0.04,
+      "standard-1024-1792": 0.08,
+      "standard-1792-1024": 0.08,
+      "hd-1024-1024": 0.08,
+      "hd-1024-1792": 0.12,
+      "hd-1792-1024": 0.12
+    },
+    "dall-e-2": {
+      "1024-1024": 0.02,
+      "512-512": 0.018,
+      "256-256": 0.016
+    }
+  },
+  "audio": {
+    "whisper": 0.006,
+    "tts": 0.015,
+    "tts-hd": 0.03
+  }
+}

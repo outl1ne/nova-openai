@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('method')->nullable()->index();
             $table->string('status')->index();
+            $table->unsignedDecimal('cost', 16, 8)->nullable();
             $table->unsignedDecimal('time_sec', 10, 4)->nullable();
             $table->string('model_requested')->nullable();
             $table->string('model_used')->nullable();

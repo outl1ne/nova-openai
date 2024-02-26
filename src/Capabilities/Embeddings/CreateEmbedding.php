@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Embeddings;
 
 use Exception;
+use Outl1ne\NovaOpenAI\Pricing\Pricing;
 use Illuminate\Http\Client\PendingRequest;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Capabilities\Measurable;
@@ -16,6 +17,7 @@ class CreateEmbedding
 
     public function __construct(
         protected readonly PendingRequest $http,
+        protected readonly Pricing $pricing,
     ) {
         $this->request = new OpenAIRequest;
         $this->request->method = 'embeddings';
@@ -58,6 +60,7 @@ class CreateEmbedding
 
     protected function handleResponse(EmbeddingsResponse $response)
     {
+        $this->request->cost = $this->pricing->embedding()->model($response->model)->calculate($response->usage->promptTokens);
         $this->request->time_sec = $this->measure();
         $this->request->status = 'success';
         $this->request->meta = $response->meta;
