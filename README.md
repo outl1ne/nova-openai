@@ -6,6 +6,10 @@ This is currently an **unstable** package, breaking changes are to be expected. 
 
 If you need any features to be implemented or bump its priority in our backlog then feel free to make an inquiry via email at info@outl1ne.com.
 
+## Screenshots
+
+![Screenshot](resources/media/screenshot1.png)
+
 ## Requirements
 
 - `php: >=8.1`
