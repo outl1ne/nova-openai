@@ -18,9 +18,13 @@ If you need any features to be implemented or bump its priority in our backlog t
 ## Installation
 
 ```bash
+# Install nova-openai
 composer require outl1ne/nova-openai
 
-// optional
+# Run migrations
+php artisan migrate
+
+# Publish config file (optional)
 php artisan vendor:publish --tag=nova-openai-config
 ```
 
