@@ -28,6 +28,19 @@ php artisan migrate
 php artisan vendor:publish --tag=nova-openai-config
 ```
 
+Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
+
+```php
+// in app/Providers/NovaServiceProvider.php
+
+public function tools()
+{
+    return [
+        \Outl1ne\NovaOpenAI\NovaOpenAI::make(),
+    ];
+}
+```
+
 ## Usage
 
 ```php
