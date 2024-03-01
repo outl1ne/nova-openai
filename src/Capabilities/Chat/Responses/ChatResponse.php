@@ -34,12 +34,12 @@ class ChatResponse
             totalTokens: $data['usage']['total_tokens'],
         );
         $this->rateLimit = new RateLimit(
-            limitRequests: $headers['x-ratelimit-limit-requests'][0],
-            limitTokens: $headers['x-ratelimit-limit-tokens'][0],
-            remainingRequests: $headers['x-ratelimit-remaining-requests'][0],
-            remainingTokens: $headers['x-ratelimit-remaining-tokens'][0],
-            resetRequests: $headers['x-ratelimit-reset-requests'][0],
-            resetTokens: $headers['x-ratelimit-reset-tokens'][0],
+            limitRequests: $headers['x-ratelimit-limit-requests'][0] ?? null,
+            limitTokens: $headers['x-ratelimit-limit-tokens'][0] ?? null,
+            remainingRequests: $headers['x-ratelimit-remaining-requests'][0] ?? null,
+            remainingTokens: $headers['x-ratelimit-remaining-tokens'][0] ?? null,
+            resetRequests: $headers['x-ratelimit-reset-requests'][0] ?? null,
+            resetTokens: $headers['x-ratelimit-reset-tokens'][0] ?? null,
         );
     }
 
