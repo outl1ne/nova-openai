@@ -27,7 +27,7 @@ class Chat extends Capability
         ?array $tools = null,
         null|string|array $toolChoice = null,
     ) {
-        return (new CreateChat($this->http, $this->pricing))->makeRequest(
+        return (new CreateChat($this->openAI))->makeRequest(
             $model,
             $messages,
             $responseFormat,

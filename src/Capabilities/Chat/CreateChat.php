@@ -3,14 +3,12 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Chat;
 
 use Exception;
-use Outl1ne\NovaOpenAI\Pricing\Pricing;
-use Illuminate\Http\Client\PendingRequest;
+use Outl1ne\NovaOpenAI\OpenAI;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Capabilities\Measurable;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
-use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses\EmbeddingsResponse;
 
 class CreateChat
 {
@@ -19,8 +17,7 @@ class CreateChat
     protected OpenAIRequest $request;
 
     public function __construct(
-        protected readonly PendingRequest $http,
-        protected readonly Pricing $pricing,
+        protected OpenAI $openAI,
     ) {
         $this->request = new OpenAIRequest;
         $this->request->method = 'chat';
@@ -77,7 +74,7 @@ class CreateChat
         $this->pending();
 
         try {
-            $response = $this->http->withHeader('Content-Type', 'application/json')->post('chat/completions', [
+            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post('chat/completions', [
                 'model' => $model,
                 'messages' => $messages->messages,
                 ...$this->request->arguments,
@@ -92,7 +89,7 @@ class CreateChat
 
     protected function handleResponse(ChatResponse $response)
     {
-        $this->request->cost = $this->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens);
+        $this->request->cost = $this->openAI->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens);
         $this->request->time_sec = $this->measure();
         $this->request->status = 'success';
         $this->request->meta = $response->meta;
