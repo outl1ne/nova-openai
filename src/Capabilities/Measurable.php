@@ -10,9 +10,9 @@ trait Measurable
      * Measures time passed from initial measure() call and returns
      * time pass in seconds.
      *
-     * @return float|null
+     * @return ?float
      */
-    protected function measure(): float|null
+    protected function measure(): ?float
     {
         $measuringStarted = !!$this->measureStart;
 
