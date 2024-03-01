@@ -8,6 +8,6 @@ class Embeddings extends Capability
 {
     public function create(string $model, string $input, ?string $encodingFormat = null, ?int $dimensions = null, ?string $user = null)
     {
-        return (new CreateEmbedding($this->http, $this->pricing))->makeRequest($model, $input, $encodingFormat, $dimensions, $user);
+        return (new CreateEmbedding($this->openAI))->makeRequest($model, $input, $encodingFormat, $dimensions, $user);
     }
 }
