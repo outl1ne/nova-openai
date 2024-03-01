@@ -77,7 +77,7 @@ class CreateChat
         $this->pending();
 
         try {
-            $response = $this->http->withHeader('Content-Type', 'application/json')->post('chat/completions', [
+            $response = $this->http->post('chat/completions', [
                 'model' => $model,
                 'messages' => $messages->messages,
                 ...$this->request->arguments,

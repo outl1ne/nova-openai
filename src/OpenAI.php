@@ -18,7 +18,10 @@ class OpenAI
         protected readonly array $headers,
         ?object $pricing = null,
     ) {
-        $this->http = Http::baseUrl($this->baseUrl)->withHeaders($this->headers);
+        $this->http = Http::baseUrl($this->baseUrl)->withHeaders([
+            ...$this->headers,
+            'Content-Type' => 'application/json',
+        ]);
         $this->pricing = new Pricing($pricing);
     }
 

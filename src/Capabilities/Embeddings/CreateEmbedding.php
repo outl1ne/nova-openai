@@ -45,7 +45,7 @@ class CreateEmbedding
         $this->pending();
 
         try {
-            $response = $this->http->withHeader('Content-Type', 'application/json')->post('embeddings', [
+            $response = $this->http->post('embeddings', [
                 'model' => $model,
                 'input' => $input,
                 ...$this->request->arguments,
