@@ -6,7 +6,7 @@ use Exception;
 use Outl1ne\NovaOpenAI\OpenAI;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Capabilities\Measurable;
-use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\ThreadResponse;
 
 class CreateThread
