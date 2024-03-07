@@ -5,8 +5,6 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters;
 class Messages
 {
     public array $messages = [];
-    public array $fileIds = [];
-    public ?array $metadata = [];
 
     public function user(string $content, array $fileIds = [], ?array $metadata = null): self
     {
