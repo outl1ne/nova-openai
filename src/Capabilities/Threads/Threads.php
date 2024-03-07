@@ -24,4 +24,14 @@ class Threads extends Capability
             $threadId,
         );
     }
+
+    public function modify(
+        string $threadId,
+        ?array $metadata = null,
+    ) {
+        return (new ModifyThread($this->openAI))->makeRequest(
+            $threadId,
+            $metadata
+        );
+    }
 }
