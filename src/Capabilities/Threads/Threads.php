@@ -16,4 +16,12 @@ class Threads extends Capability
             $metadata
         );
     }
+
+    public function retrieve(
+        string $threadId,
+    ) {
+        return (new RetrieveThread($this->openAI))->makeRequest(
+            $threadId,
+        );
+    }
 }
