@@ -18,8 +18,8 @@ class MessageResponse
     ) {
         $data = $response->json();
 
-        $this->threadId = $data['id'];
-        $this->messageId = $data['thread_id'];
+        $this->messageId = $data['id'];
+        $this->threadId = $data['thread_id'];
         $this->appendMeta('id', $data['id']);
         $this->appendMeta('object', $data['object']);
         $this->appendMeta('created_at', $data['created_at']);
