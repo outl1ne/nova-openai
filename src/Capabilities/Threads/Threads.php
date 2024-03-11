@@ -13,7 +13,7 @@ class Threads extends Capability
     ) {
         return (new CreateThread($this->openAI))->makeRequest(
             $messages,
-            $metadata
+            $metadata,
         );
     }
 
@@ -31,7 +31,20 @@ class Threads extends Capability
     ) {
         return (new ModifyThread($this->openAI))->makeRequest(
             $threadId,
-            $metadata
+            $metadata,
         );
+    }
+
+    public function delete(
+        string $threadId,
+    ) {
+        return (new DeleteThread($this->openAI))->makeRequest(
+            $threadId,
+        );
+    }
+
+    public function messages(): ThreadMessages
+    {
+        return new ThreadMessages($this->openAI);
     }
 }

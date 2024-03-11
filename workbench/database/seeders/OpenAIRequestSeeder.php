@@ -5,6 +5,8 @@ namespace Workbench\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Outl1ne\NovaOpenAI\Facades\OpenAI;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Messages as ThreadMessages;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Message as ThreadMessage;
 
 class OpenAIRequestSeeder extends Seeder
 {
@@ -22,5 +24,22 @@ class OpenAIRequestSeeder extends Seeder
         //     'input' => 'The quick brown fox jumped over the lazy dog.',
         //     'voice' => 'alloy',
         // ]);
+        // $thread = OpenAI::threads()->create();
+        // $thread = OpenAI::threads()->create((new ThreadMessages)->user('What is your purpose in one short sentence?'));
+        // $message = OpenAI::threads()->messages()->create($thread->response()->json()['id'], ThreadMessage::user('How does AI work? Explain it in simple terms in one sentence.'));
+        // $messages = OpenAI::threads()->messages()->list($thread->response()->json()['id']);
+        // $messageFiles = OpenAI::threads()->messages()->listFiles($thread->response()->json()['id'], $message->response()->json()['id']);
+        // $message2 = OpenAI::threads()->messages()->retrieve($thread->response()->json()['id'], $message->response()->json()['id']);
+        // $message3 = OpenAI::threads()->messages()->modify($thread->response()->json()['id'], $message->response()->json()['id'], [
+        //     'foo' => 'bar',
+        // ]);
+        // $message2file = OpenAI::threads()->messages()->retrieveFile($thread->response()->json()['id'], $message->response()->json()['id']);
+        // $thread2 = OpenAI::threads()->retrieve($thread->response()->json()['id']);
+        // $thread3 = OpenAI::threads()->modify($thread->response()->json()['id'], [
+        //     'modified' => true,
+        //     'user' => 'abc123',
+        // ]);
+        // $thread4 = OpenAI::threads()->delete($thread->response()->json()['id']);
+        // dd($thread->response()->json(), $message->response()->json(), $messages->response()->json(), $messageFiles->response()->json(), $message2->response()->json(), $message3->response()->json());
     }
 }
