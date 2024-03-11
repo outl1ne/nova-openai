@@ -100,6 +100,8 @@ class CreateChat
         $this->request->usage_total_tokens = $response->usage->totalTokens;
         $this->request->save();
 
+        $response->request = $this->request;
+
         return $response;
     }
 

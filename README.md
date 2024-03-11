@@ -55,6 +55,25 @@ $response = OpenAI::embeddings()->create(
 );
 ```
 
+## Testing
+
+You can use the `OpenAIRequest` factory to create a request for testing purposes.
+
+```php
+$mockOpenAIChat = Mockery::mock(Chat::class);
+$mockOpenAIChat->shouldReceive('create')->andReturn((object) [
+    'choices' => [
+        [
+            'message' => [
+                'content' => 'Mocked response'
+            ]
+        ]
+    ],
+    'request' => OpenAIRequest::factory()->create()
+]);
+OpenAI::shouldReceive('chat')->andReturn($mockOpenAIChat);
+```
+
 ## Contributing
 
 ```
