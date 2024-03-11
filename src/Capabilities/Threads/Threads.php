@@ -47,4 +47,9 @@ class Threads extends Capability
     {
         return new ThreadMessages($this->openAI);
     }
+
+    public function run(): ThreadRun
+    {
+        return new ThreadRun($this->openAI);
+    }
 }
