@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Response;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Usage;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\RateLimit;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
+use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 
 class EmbeddingsResponse
 {
@@ -17,6 +18,7 @@ class EmbeddingsResponse
     public Usage $usage;
     public RateLimit $rateLimit;
     public Embedding $embedding;
+    public OpenAIRequest $request;
 
     public function __construct(
         protected readonly Response $response,
