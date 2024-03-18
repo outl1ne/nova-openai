@@ -80,6 +80,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::EMBEDDINGS->value => 'bg-amber-600 text-amber-200',
                     OpenAIRequestMethod::AUDIO->value => 'bg-fuchsia-600 text-fuchsia-200',
                     OpenAIRequestMethod::THREADS->value => 'bg-neutral-600 text-neutral-200',
+                    OpenAIRequestMethod::ASSISTANTS->value => 'bg-teal-600 text-teal-200',
                 ])->sortable(),
             Number::make('Cost', 'cost')->sortable()->displayUsing(fn ($value) => $value === null ? null : '$' . number_format($value, 4)),
             Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn () => "{$this->time_sec} sec"),
