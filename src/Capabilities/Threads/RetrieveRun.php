@@ -52,9 +52,13 @@ class RetrieveRun
 
     protected function handleResponse(RunResponse $response)
     {
+        $this->request->cost = $response->usage ? $this->openAI->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens) : null;
         $this->request->time_sec = $this->measure();
         $this->request->status = 'success';
         $this->request->meta = $response->meta;
+        $this->request->usage_prompt_tokens = $response->usage?->promptTokens;
+        $this->request->usage_completion_tokens = $response->usage?->completionTokens;
+        $this->request->usage_total_tokens = $response->usage?->totalTokens;
         $this->request->save();
 
         return $response;

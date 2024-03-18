@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Threads\Responses;
 
 use Illuminate\Http\Client\Response;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Usage;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
 
 class RunResponse
@@ -10,6 +11,7 @@ class RunResponse
     use AppendsMeta;
 
     public string $model;
+    public ?Usage $usage;
 
     public function __construct(
         protected readonly Response $response,
@@ -34,7 +36,11 @@ class RunResponse
         $this->appendMeta('tools', $data['tools']);
         $this->appendMeta('file_ids', $data['file_ids']);
         $this->appendMeta('metadata', $data['metadata']);
-        $this->appendMeta('usage', $data['usage']);
+        $this->usage = $data['usage'] ? new Usage(
+            promptTokens: $data['usage']['prompt_tokens'],
+            completionTokens: $data['usage']['completion_tokens'],
+            totalTokens: $data['usage']['total_tokens'],
+        ) : null;
     }
 
     public function response()

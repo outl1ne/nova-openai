@@ -6,6 +6,10 @@ class ModelPricing
 {
     protected string $model;
 
+    protected array $modelMap = [
+        'gpt-3.5-turbo' => 'gpt-3.5-turbo-0125',
+    ];
+
     public function __construct(protected readonly Pricing $basePricing)
     {
         //
@@ -21,7 +25,8 @@ class ModelPricing
     {
         if (!$this->basePricing->pricing) return null;
 
-        return $this->basePricing->pricing->models->{$this->model}->input * $inputTokens / 1000
-            + $this->basePricing->pricing->models->{$this->model}->output * $outputTokens / 1000;
+        $model = $this->modelMap[$this->model] ?? $this->model;
+        return $this->basePricing->pricing->models->{$model}->input * $inputTokens / 1000
+            + $this->basePricing->pricing->models->{$model}->output * $outputTokens / 1000;
     }
 }
