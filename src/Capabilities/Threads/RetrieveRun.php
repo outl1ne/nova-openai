@@ -3,33 +3,19 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Threads;
 
 use Exception;
-use Outl1ne\NovaOpenAI\OpenAI;
-use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
-use Outl1ne\NovaOpenAI\Capabilities\Measurable;
+use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\RunResponse;
 
-class RetrieveRun
+class RetrieveRun extends CapabilityClient
 {
-    use Measurable;
+    protected string $method = 'threads';
 
-    protected OpenAIRequest $request;
-
-    public function __construct(
-        protected OpenAI $openAI,
-    ) {
-        $this->request = new OpenAIRequest;
-        $this->request->method = 'threads';
-        $this->request->arguments = [];
-    }
-
-    public function pending()
+    public function __construct(...$arguments)
     {
-        $this->measure();
+        parent::__construct(...$arguments);
 
-        $this->request->status = 'pending';
-        $this->request->save();
-
-        return $this->request;
+        $this->capability->shouldStorePending(fn () => false);
+        $this->capability->shouldStore(fn ($response = null) => $response?->meta['status'] !== 'in_progress');
     }
 
     public function makeRequest(
@@ -48,29 +34,5 @@ class RetrieveRun
         } catch (Exception $e) {
             $this->handleException($e);
         }
-    }
-
-    protected function handleResponse(RunResponse $response)
-    {
-        $this->request->cost = $response->usage ? $this->openAI->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens) : null;
-        $this->request->time_sec = $this->measure();
-        $this->request->status = 'success';
-        $this->request->meta = $response->meta;
-        $this->request->usage_prompt_tokens = $response->usage?->promptTokens;
-        $this->request->usage_completion_tokens = $response->usage?->completionTokens;
-        $this->request->usage_total_tokens = $response->usage?->totalTokens;
-        $this->request->save();
-
-        return $response;
-    }
-
-    public function handleException(Exception $e)
-    {
-        $this->request->time_sec = $this->measure();
-        $this->request->status = 'error';
-        $this->request->error = $e->getMessage();
-        $this->request->save();
-
-        throw $e;
     }
 }
