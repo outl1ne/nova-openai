@@ -2,8 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Chat\Responses;
 
-use Illuminate\Http\Client\Response as HttpResponse;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\Response as Response;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
 class ChatResponse extends Response
 {

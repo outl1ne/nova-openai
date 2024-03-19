@@ -6,6 +6,7 @@ use Exception;
 use Outl1ne\NovaOpenAI\OpenAI;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
+use Outl1ne\NovaOpenAI\Pricing\Calculator;
 
 abstract class CapabilityClient
 {
@@ -78,6 +79,11 @@ abstract class CapabilityClient
         if ($response->model === null || $response->usage === null) {
             return null;
         }
-        return $this->openAI->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens);
+        return $this->pricing()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens);
+    }
+
+    protected function pricing(): Calculator
+    {
+        return $this->openAI->pricing->models();
     }
 }
