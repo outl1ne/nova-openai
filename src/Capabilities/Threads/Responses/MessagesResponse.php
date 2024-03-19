@@ -2,29 +2,20 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Threads\Responses;
 
-use Illuminate\Http\Client\Response;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
-class MessagesResponse
+class MessagesResponse extends Response
 {
-    use AppendsMeta;
-
     public array $messages;
 
-    public function __construct(
-        protected readonly Response $response,
-    ) {
-        $data = $response->json();
-
-        $this->appendMeta('object', $data['object']);
-        $this->appendMeta('first_id', $data['first_id']);
-        $this->appendMeta('last_id', $data['last_id']);
-        $this->appendMeta('has_more', $data['has_more']);
-        $this->messages = $data['data'];
-    }
-
-    public function response()
+    public function __construct(...$arguments)
     {
-        return $this->response;
+        parent::__construct(...$arguments);
+
+        $this->appendMeta('object', $this->data['object']);
+        $this->appendMeta('first_id', $this->data['first_id']);
+        $this->appendMeta('last_id', $this->data['last_id']);
+        $this->appendMeta('has_more', $this->data['has_more']);
+        $this->messages = $this->data['data'];
     }
 }

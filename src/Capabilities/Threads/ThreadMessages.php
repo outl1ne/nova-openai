@@ -11,7 +11,7 @@ class ThreadMessages extends Capability
         string $threadId,
         Message $messages,
     ) {
-        return (new CreateMessage($this->openAI))->makeRequest(
+        return (new CreateMessage($this))->makeRequest(
             $threadId,
             $messages,
         );
@@ -24,7 +24,7 @@ class ThreadMessages extends Capability
         ?string $after = null,
         ?string $before = null,
     ) {
-        return (new ListMessages($this->openAI))->makeRequest(
+        return (new ListMessages($this))->makeRequest(
             $threadId,
             $limit,
             $order,
@@ -41,7 +41,7 @@ class ThreadMessages extends Capability
         ?string $after = null,
         ?string $before = null,
     ) {
-        return (new ListMessageFiles($this->openAI))->makeRequest(
+        return (new ListMessageFiles($this))->makeRequest(
             $threadId,
             $messageId,
             $limit,
@@ -55,7 +55,7 @@ class ThreadMessages extends Capability
         string $threadId,
         string $messageId,
     ) {
-        return (new RetrieveMessage($this->openAI))->makeRequest(
+        return (new RetrieveMessage($this))->makeRequest(
             $threadId,
             $messageId,
         );
@@ -66,7 +66,7 @@ class ThreadMessages extends Capability
         string $messageId,
         string $fileId,
     ) {
-        return (new RetrieveMessageFile($this->openAI))->makeRequest(
+        return (new RetrieveMessageFile($this))->makeRequest(
             $threadId,
             $messageId,
             $fileId,
@@ -78,7 +78,7 @@ class ThreadMessages extends Capability
         string $messageId,
         ?array $metadata = null,
     ) {
-        return (new ModifyMessage($this->openAI))->makeRequest(
+        return (new ModifyMessage($this))->makeRequest(
             $threadId,
             $messageId,
             $metadata,
