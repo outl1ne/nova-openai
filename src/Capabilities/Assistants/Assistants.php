@@ -15,7 +15,7 @@ class Assistants extends Capability
         ?array $fileIds = null,
         ?array $metadata = null,
     ) {
-        return (new CreateAssistant($this->openAI))->makeRequest(
+        return (new CreateAssistant($this))->makeRequest(
             $model,
             $name,
             $description,
