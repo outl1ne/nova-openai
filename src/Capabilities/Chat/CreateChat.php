@@ -59,27 +59,14 @@ class CreateChat extends CapabilityClient
             ]);
             $response->throw();
 
-            return $this->handleResponse(new ChatResponse($response));
+            return $this->handleResponse(new ChatResponse($response), [$this, 'response']);
         } catch (Exception $e) {
             $this->handleException($e);
         }
     }
 
-    protected function handleResponse(ChatResponse $response)
+    protected function response(ChatResponse $response)
     {
-        $this->request->cost = $this->openAI->pricing->models()->model($response->model)->calculate($response->usage->promptTokens, $response->usage->completionTokens);
-        $this->request->time_sec = $this->measure();
-        $this->request->status = 'success';
-        $this->request->meta = $response->meta;
-        $this->request->model_used = $response->model;
         $this->request->output = $response->choices;
-        $this->request->usage_prompt_tokens = $response->usage->promptTokens;
-        $this->request->usage_completion_tokens = $response->usage->completionTokens;
-        $this->request->usage_total_tokens = $response->usage->totalTokens;
-        $this->store($response);
-
-        $response->request = $this->request;
-
-        return $response;
     }
 }
