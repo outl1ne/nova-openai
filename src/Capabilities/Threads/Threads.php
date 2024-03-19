@@ -11,7 +11,7 @@ class Threads extends Capability
         ?Messages $messages = null,
         ?array $metadata = null,
     ) {
-        return (new CreateThread($this->openAI))->makeRequest(
+        return (new CreateThread($this))->makeRequest(
             $messages,
             $metadata,
         );
@@ -20,7 +20,7 @@ class Threads extends Capability
     public function retrieve(
         string $threadId,
     ) {
-        return (new RetrieveThread($this->openAI))->makeRequest(
+        return (new RetrieveThread($this))->makeRequest(
             $threadId,
         );
     }
@@ -29,7 +29,7 @@ class Threads extends Capability
         string $threadId,
         ?array $metadata = null,
     ) {
-        return (new ModifyThread($this->openAI))->makeRequest(
+        return (new ModifyThread($this))->makeRequest(
             $threadId,
             $metadata,
         );
@@ -38,7 +38,7 @@ class Threads extends Capability
     public function delete(
         string $threadId,
     ) {
-        return (new DeleteThread($this->openAI))->makeRequest(
+        return (new DeleteThread($this))->makeRequest(
             $threadId,
         );
     }

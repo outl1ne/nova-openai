@@ -15,7 +15,7 @@ class ThreadRun extends Capability
         ?array $tools = null,
         ?array $metadata = null,
     ) {
-        return (new CreateRun($this->openAI))->makeRequest(
+        return (new CreateRun($this))->makeRequest(
             $threadId,
             $assistantId,
             $model,
@@ -30,7 +30,7 @@ class ThreadRun extends Capability
         string $threadId,
         string $runId,
     ) {
-        return (new RetrieveRun($this->openAI))->makeRequest(
+        return (new RetrieveRun($this))->makeRequest(
             $threadId,
             $runId,
         );

@@ -2,27 +2,19 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Threads\Responses;
 
-use Illuminate\Http\Client\Response;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\AppendsMeta;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
-class ThreadDeletionStatusResponse
+class ThreadDeletionStatusResponse extends Response
 {
-    use AppendsMeta;
-
     public string $threadId;
 
-    public function __construct(
-        protected readonly Response $response,
-    ) {
-        $data = $response->json();
-        $this->threadId = $data['id'];
-        $this->appendMeta('id', $data['id']);
-        $this->appendMeta('object', $data['object']);
-        $this->appendMeta('deleted', $data['deleted']);
-    }
-
-    public function response()
+    public function __construct(...$arguments)
     {
-        return $this->response;
+        parent::__construct(...$arguments);
+
+        $this->threadId = $this->data['id'];
+        $this->appendMeta('id', $this->data['id']);
+        $this->appendMeta('object', $this->data['object']);
+        $this->appendMeta('deleted', $this->data['deleted']);
     }
 }
