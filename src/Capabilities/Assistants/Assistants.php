@@ -25,4 +25,34 @@ class Assistants extends Capability
             $metadata,
         );
     }
+
+    public function modify(
+        string $assistantId,
+        ?string $model = null,
+        ?string $name = null,
+        ?string $description = null,
+        ?string $instructions = null,
+        ?array $tools = null,
+        ?array $fileIds = null,
+        ?array $metadata = null,
+    ) {
+        return (new ModifyAssistant($this))->makeRequest(
+            $assistantId,
+            $model,
+            $name,
+            $description,
+            $instructions,
+            $tools,
+            $fileIds,
+            $metadata,
+        );
+    }
+
+    public function delete(
+        string $assistantId,
+    ) {
+        return (new DeleteAssistant($this))->makeRequest(
+            $assistantId,
+        );
+    }
 }
