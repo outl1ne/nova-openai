@@ -74,7 +74,7 @@ abstract class CapabilityClient
         throw $e;
     }
 
-    protected function calculateCost($response): ?int
+    protected function calculateCost($response): ?float
     {
         if ($response->model === null || $response->usage === null) {
             return null;
