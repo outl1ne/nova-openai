@@ -77,7 +77,8 @@ class NovaOpenAIServiceProvider extends ServiceProvider
             $apiKey = config('nova-openai.api_key');
             $organization = config('nova-openai.organization');
             $headers = config('nova-openai.headers');
-            $pricingPath = config('nova-openai.pricing') ?? __DIR__ . '/../resources/openai-pricing.json';
+            $defaultPricingPath = __DIR__ . '/../resources/openai-pricing.json';
+            $pricingPath = config('nova-openai.pricing', $defaultPricingPath) ?? $defaultPricingPath;
             $pricing = json_decode(file_get_contents($pricingPath));
 
             if (!is_string($apiKey)) {
