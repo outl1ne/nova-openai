@@ -5,7 +5,13 @@ namespace Outl1ne\NovaOpenAI\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \OpenAI\Capabilities\Embeddings\Embeddings embeddings()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings embeddings()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Chat chat()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Assistants assistants()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Threads threads()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\PendingRequest http()
+ *
+ * @see \Outl1ne\NovaOpenAI\OpenAI
  */
 final class OpenAI extends Facade
 {
