@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings embeddings()
- * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Chat chat()
- * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Assistants assistants()
- * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Threads threads()
- * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\PendingRequest http()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Chat\Chat chat()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Assistants\Assistants assistants()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Threads\Threads threads()
+ * @method static \Illuminate\Http\Client\PendingRequest http()
  *
  * @see \Outl1ne\NovaOpenAI\OpenAI
  */
