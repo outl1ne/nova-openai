@@ -6,10 +6,11 @@ use Closure;
 use Illuminate\Support\Facades\Http;
 use Outl1ne\NovaOpenAI\Pricing\Pricing;
 use Illuminate\Http\Client\PendingRequest;
-use Outl1ne\NovaOpenAI\Capabilities\Assistants\Assistants;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Chat;
-use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings;
+use Outl1ne\NovaOpenAI\Capabilities\Files\Files;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Threads;
+use Outl1ne\NovaOpenAI\Capabilities\Assistants\Assistants;
+use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings;
 
 class OpenAI
 {
@@ -42,6 +43,12 @@ class OpenAI
     public function threads(): Threads
     {
         return new Threads($this);
+    }
+
+
+    public function files(): Files
+    {
+        return new Files($this);
     }
 
     public function http(): PendingRequest
