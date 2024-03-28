@@ -48,11 +48,11 @@ public function tools()
 ```php
 $assistant = OpenAI::assistants()->create(
   'gpt-3.5-turbo',
-  'Allan\s assistant',
+  'Allan\'s assistant',
   'For testing purposes of nova-openai package.',
   'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
 );
-$assistantModified = OpenAI::assistants()->modify($assistant->id, null, 'Allan\s assistant!');
+$assistantModified = OpenAI::assistants()->modify($assistant->id, null, 'Allan\'s assistant!');
 $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
 // dd($assistant->response()->json(), $assistantModified->response()->json(), $deletedAssistant->response()->json());
 ```
