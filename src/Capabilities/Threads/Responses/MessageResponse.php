@@ -6,15 +6,15 @@ use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
 class MessageResponse extends Response
 {
+    public string $id;
     public string $threadId;
-    public string $messageId;
     public array $content;
 
     public function __construct(...$arguments)
     {
         parent::__construct(...$arguments);
 
-        $this->messageId = $this->data['id'];
+        $this->id = $this->data['id'];
         $this->threadId = $this->data['thread_id'];
         $this->appendMeta('id', $this->data['id']);
         $this->appendMeta('object', $this->data['object']);

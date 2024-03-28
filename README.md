@@ -43,16 +43,101 @@ public function tools()
 
 ## Usage
 
+### Assistants
+
+```php
+$assistant = OpenAI::assistants()->create(
+  'gpt-3.5-turbo',
+  'Allan\s assistant',
+  'For testing purposes of nova-openai package.',
+  'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
+);
+$assistantModified = OpenAI::assistants()->modify($assistant->id, null, 'Allan\s assistant!');
+$deletedAssistant = OpenAI::assistants()->delete($assistant->id);
+// dd($assistant->response()->json(), $assistantModified->response()->json(), $deletedAssistant->response()->json());
+```
+
+### Chat
+
 ```php
 $response = OpenAI::chat()->create(
     model: 'gpt-3.5-turbo',
     messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
 );
+$data = $response->response()->json();
+```
 
+### Embeddings
+
+```php
 $response = OpenAI::embeddings()->create(
     'text-embedding-3-small',
     'The food was delicious and the waiter...'
 );
+// dd($response->embedding);
+```
+
+### Files
+
+Uploading file, retrieving it and deleting it afterwards.
+
+```php
+$file = OpenAI::files()->upload(
+    file_get_contents('files/file.txt'),
+    'file.txt',
+    'assistants',
+);
+$files = OpenAI::files()->list();
+$file2 = OpenAI::files()->retrieve($file->id);
+$deletedFile = OpenAI::files()->delete($file->id);
+// dd($file->response()->json(), $file2->response()->json(), $deletedFile->response()->json());
+```
+
+Retrieving a file content.
+
+```php
+$fileContent = OpenAI::files()->retrieveContent($file->id);
+```
+
+### Threads
+
+```php
+$assistant = OpenAI::assistants()->create(
+    'gpt-3.5-turbo',
+    'Allan',
+    'nova-openai testimiseks',
+    'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
+);
+$thread = OpenAI::threads()
+    ->create((new ThreadMessages)->user('What is your purpose in one short sentence?'));
+$message = OpenAI::threads()->messages()
+    ->create($thread->id, ThreadMessage::user('How does AI work? Explain it in simple terms in one sentence.'));
+$run = OpenAI::threads()->run()->execute($thread->id, $assistant->id);
+$status = null;
+while ($status !== 'completed') {
+    $runStatus = OpenAI::threads()->run()->retrieve($thread->id, $run->id);
+    if ($runStatus->status === 'completed') {
+        echo '# run completed' . PHP_EOL;
+        $status = 'completed';
+    } else {
+        echo '# run not completed yet, trying again' . PHP_EOL;
+    }
+    sleep(1);
+}
+$messages = OpenAI::threads()->messages()->list($thread->id);
+
+// cleanup
+$deletedThread = OpenAI::threads()->delete($thread->id);
+$deletedAssistant = OpenAI::assistants()->delete($assistant->id);
+// dd(
+//     $assistant->response()->json(),
+//     $thread->response()->json(),
+//     $message->response()->json(),
+//     $run->response()->json(),
+//     $messages->response()->json(),
+//     $deletedThread->response()->json(),
+//     $deletedAssistant->response()->json(),
+// );
 ```
 
 ## Testing

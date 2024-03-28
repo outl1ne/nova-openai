@@ -6,11 +6,16 @@ use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
 class RunResponse extends Response
 {
+    public string $id;
+    public string $status;
+
     public function __construct(...$arguments)
     {
         parent::__construct(...$arguments);
 
+        $this->id = $this->data['id'];
         $this->model = $this->data['model'];
+        $this->status = $this->data['status'];
         $this->appendMeta('id', $this->data['id']);
         $this->appendMeta('object', $this->data['object']);
         $this->appendMeta('created_at', $this->data['created_at']);
