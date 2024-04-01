@@ -55,4 +55,9 @@ class Assistants extends Capability
             $assistantId,
         );
     }
+
+    public function files(): AssistantFiles
+    {
+        return new AssistantFiles($this->openAI);
+    }
 }

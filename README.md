@@ -57,6 +57,39 @@ $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
 // dd($assistant->response()->json(), $assistantModified->response()->json(), $deletedAssistant->response()->json());
 ```
 
+Attaching, listing and deleting files.
+
+```php
+$assistant = OpenAI::assistants()->create(
+    'gpt-3.5-turbo',
+    'Allan\'s assistant',
+    'For testing purposes of nova-openai package.',
+    'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.',
+    [
+        [
+            'type' => 'retrieval',
+        ],
+    ],
+);
+$file = OpenAI::files()->upload(
+    file_get_contents('files/file.txt'),
+    'file.txt',
+    'assistants',
+);
+$assistantFile = OpenAI::assistants()->files()->create($assistant->id, $file->id);
+$assistantFiles = OpenAI::assistants()->files()->list($assistant->id);
+$deletedAssistantFile = OpenAI::assistants()->files()->delete($assistant->id, $file->id);
+
+// Cleanup
+$deletedAssistant = OpenAI::assistants()->delete($assistant->id);
+$deletedFile = OpenAI::files()->delete($file->id);
+// dd(
+//     $assistantFile->response()->json(),
+//     $assistantFiles->response()->json(),
+//     $deletedAssistantFile->response()->json(),
+// );
+```
+
 ### Chat
 
 ```php
