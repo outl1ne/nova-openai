@@ -39,6 +39,8 @@ abstract class CapabilityClient
 
     public function store($response = null)
     {
+        $this->request = ($this->capability->storingCallback)($this->request);
+
         if (($this->capability->shouldStoreCallback)($response)) {
             $this->request->save();
         }
