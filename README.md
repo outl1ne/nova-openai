@@ -110,6 +110,18 @@ $response = OpenAI::embeddings()->create(
 // dd($response->embedding);
 ```
 
+If you are storing the embedding vectors already somewhere else in your application then you might want to disable storing it within this package via passing a callback function with `storing(fn ($model) => $model)` method.
+
+```php
+$response = OpenAI::embeddings()->storing(function ($model) {
+    $model->output = null;
+    return $model;
+})->create(
+    'text-embedding-3-small',
+    'The food was delicious and the waiter...'
+);
+```
+
 ### Files
 
 Uploading file, retrieving it and deleting it afterwards.
