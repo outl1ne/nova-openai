@@ -33,7 +33,7 @@ class CreateChat extends CapabilityClient
     ): ChatResponse {
         $this->request->model_requested = $model;
         $this->request->input = $messages->messages;
-        $this->request->appendArgument('response_format', $responseFormat);
+        $this->request->appendArgument('response_format', $responseFormat->responseFormat ?? null);
         $this->request->appendArgument('user', $user);
         $this->request->appendArgument('frequency_penalty', $frequencyPenalty);
         $this->request->appendArgument('logit_bias', $logitBias);
