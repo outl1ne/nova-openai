@@ -100,6 +100,16 @@ $response = OpenAI::chat()->create(
 $data = $response->response()->json();
 ```
 
+Enable JSON response formatting:
+
+```php
+$response = OpenAI::chat()->create(
+    model: 'gpt-3.5-turbo',
+    messages: (new Messages)->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
+    responseFormat: (new ResponseFormat)->json(),
+);
+```
+
 ### Embeddings
 
 ```php
