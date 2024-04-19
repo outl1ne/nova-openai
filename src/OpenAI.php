@@ -20,6 +20,7 @@ class OpenAI
     public function __construct(
         protected readonly string $baseUrl,
         protected readonly array $headers,
+        protected int $timeout,
         ?object $pricing = null,
     ) {
         $this->pricing = new Pricing($pricing);
@@ -53,6 +54,6 @@ class OpenAI
 
     public function http(): PendingRequest
     {
-        return clone Http::baseUrl($this->baseUrl)->withHeaders($this->headers);
+        return clone Http::baseUrl($this->baseUrl)->timeout($this->timeout)->withHeaders($this->headers);
     }
 }

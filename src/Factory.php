@@ -27,6 +27,11 @@ class Factory
     protected array $headers = [];
 
     /**
+     * The timeout for the outgoing requests
+     */
+    protected int $timeout = 30;
+
+    /**
      * The pricing configuration to calculate the cost of requests.
      */
     protected ?object $pricing = null;
@@ -87,6 +92,13 @@ class Factory
         return $this;
     }
 
+    public function withTimeout(int $timeout): self
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
     /**
      * Adds a pricing configuration.
      */
@@ -114,6 +126,6 @@ class Factory
 
         $baseUrl = rtrim($this->baseUrl ?: 'https://api.openai.com/v1', '/') . '/';
 
-        return new OpenAI($baseUrl, $headers, $this->pricing);
+        return new OpenAI($baseUrl, $headers, $this->timeout, $this->pricing);
     }
 }
