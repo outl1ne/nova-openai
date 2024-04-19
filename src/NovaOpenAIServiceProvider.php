@@ -77,6 +77,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
             $apiKey = config('nova-openai.api_key');
             $organization = config('nova-openai.organization');
             $headers = config('nova-openai.headers');
+            $timeout = config('nova-openai.request_timeout');
             $pricingPath = config('nova-openai.pricing') ?? __DIR__ . '/../resources/openai-pricing.json';
             $pricing = json_decode(file_get_contents($pricingPath));
 
@@ -92,6 +93,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
                 ->withApiKey($apiKey)
                 ->withOrganization($organization)
                 ->withHttpHeaders($headers)
+                ->withTimeout($timeout)
                 ->withPricing($pricing)
                 ->make();
         });
