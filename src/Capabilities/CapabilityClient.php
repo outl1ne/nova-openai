@@ -2,11 +2,13 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities;
 
+use Closure;
 use Exception;
 use Outl1ne\NovaOpenAI\OpenAI;
-use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 use Outl1ne\NovaOpenAI\Pricing\Calculator;
+use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
+use Illuminate\Http\Client\Response as HttpResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
 abstract class CapabilityClient
 {
@@ -23,6 +25,9 @@ abstract class CapabilityClient
         $this->request = new OpenAIRequest;
         $this->request->method = $this->method;
         $this->request->arguments = [];
+        if ($capability->streamCallback instanceof Closure) {
+            $this->request->appendArgument('stream', true);
+        }
     }
 
     public function pending()
@@ -60,6 +65,34 @@ abstract class CapabilityClient
         $this->store($response);
 
         $response->request = $this->request;
+
+        return $response;
+    }
+
+    protected function isStreamedResponse(HttpResponse $response)
+    {
+        return $response->getBody() instanceof \Psr\Http\Message\StreamInterface && $response->getBody()->isReadable();
+    }
+
+    protected function handleStreamedResponse(HttpResponse $response)
+    {
+        if (!$this->capability->streamCallback instanceof Closure) {
+            throw new Exception('Response is a stream but stream callback is not defined.');
+        }
+
+        $body = $response->getBody();
+        $i = 0;
+        $rawResult = '';
+        while (!$body->eof()) {
+            $rawChunk = $body->read(1024);
+            $rawResult .= $rawChunk;
+            // dd($chunk);
+            echo "[{$i}] ";
+            echo $chunk;
+            $i++;
+            $result .= $chunk;
+            ($this->capability->streamCallback)($chunk, $result);
+        }
 
         return $response;
     }
