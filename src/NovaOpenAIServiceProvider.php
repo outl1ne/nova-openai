@@ -80,6 +80,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
             $timeout = config('nova-openai.request_timeout');
             $pricingPath = config('nova-openai.pricing') ?? __DIR__ . '/../resources/openai-pricing.json';
             $pricing = json_decode(file_get_contents($pricingPath));
+            $cacheEmbeddings = config('nova-openai.cache_embeddings');
 
             if (!is_string($apiKey)) {
                 throw new ApiKeyMissingException;
@@ -95,6 +96,7 @@ class NovaOpenAIServiceProvider extends ServiceProvider
                 ->withHttpHeaders($headers)
                 ->withTimeout($timeout)
                 ->withPricing($pricing)
+                ->setCacheEmbeddings($cacheEmbeddings)
                 ->make();
         });
         $this->app->alias(OpenAI::class, 'nova-openai');

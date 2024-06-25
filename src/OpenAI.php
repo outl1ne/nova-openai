@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Http;
 use Outl1ne\NovaOpenAI\Pricing\Pricing;
 use Illuminate\Http\Client\PendingRequest;
+use Outl1ne\NovaOpenAI\Cache\EmbeddingsCache;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Chat;
 use Outl1ne\NovaOpenAI\Capabilities\Files\Files;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Threads;
@@ -22,13 +23,16 @@ class OpenAI
         protected readonly array $headers,
         protected int $timeout,
         ?object $pricing = null,
+        protected bool $cacheEmbeddings = false,
     ) {
         $this->pricing = new Pricing($pricing);
     }
 
     public function embeddings(): Embeddings
     {
-        return new Embeddings($this);
+        $embeddings = new Embeddings($this);
+        $embeddings->setCache(new EmbeddingsCache($this->cacheEmbeddings));
+        return $embeddings;
     }
 
     public function chat(): Chat

@@ -1,58 +1,68 @@
 {
-  "name": "outl1ne/nova-openai",
-  "description": "OpenAI SDK for a Laravel application that also stores OpenAI communication and presents it in a Laravel Nova admin panel.",
-  "keywords": [
-    "laravel",
-    "nova",
-    "openai"
-  ],
-  "license": "MIT",
-  "require": {
-    "php": "^8.1",
-    "guzzlehttp/guzzle": "^7.8",
-    "laravel/nova": "^4.32",
-    "nova-kit/nova-packages-tool": "^1.14",
-    "outl1ne/nova-translations-loader": "^5.0"
-  },
-  "require-dev": {
-    "nova-kit/nova-devtool": "^1.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "Outl1ne\\NovaOpenAI\\": "src/",
-      "Outl1ne\\NovaOpenAI\\Database\\Factories\\": "database/factories/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Workbench\\App\\": "workbench/app/",
-      "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Outl1ne\\NovaOpenAI\\NovaOpenAIServiceProvider"
-      ]
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "repositories": {
-    "nova": {
-      "type": "composer",
-      "url": "https://nova.laravel.com"
-    }
-  },
-  "scripts": {
-    "post-autoload-dump": [
-      "@clear",
-      "@prepare"
+    "name": "outl1ne/nova-openai",
+    "description": "OpenAI SDK for a Laravel application that also stores OpenAI communication and presents it in a Laravel Nova admin panel.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "openai"
     ],
-    "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-    "prepare": "@php vendor/bin/testbench package:discover --ansi"
-  }
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.8",
+        "laravel/nova": "^4.32",
+        "nova-kit/nova-packages-tool": "^1.14",
+        "outl1ne/nova-translations-loader": "^5.0"
+    },
+    "require-dev": {
+        "nova-kit/nova-devtool": "^1.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Outl1ne\\NovaOpenAI\\": "src/",
+            "Outl1ne\\NovaOpenAI\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Outl1ne\\NovaOpenAI\\NovaOpenAIServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "nova": {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/phpstan analyse"
+        ]
+    }
 }
