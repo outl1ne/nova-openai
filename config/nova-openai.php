@@ -47,4 +47,14 @@ return [
     */
 
     'pricing' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Embeddings cache
+    |--------------------------------------------------------------------------
+    |
+    | Cache embedding responses to reduce the cost for duplicate requests.
+    */
+
+    'cache_embeddings' => env('OPENAI_CACHE_EMBEDDINGS', false),
 ];

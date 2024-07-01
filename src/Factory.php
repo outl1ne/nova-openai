@@ -37,6 +37,11 @@ class Factory
     protected ?object $pricing = null;
 
     /**
+     * Cache embedding responses to reduce the cost for duplicate requests.
+     */
+    protected bool $cacheEmbeddings = false;
+
+    /**
      * Sets the API key for the requests.
      */
     public function withApiKey(string $apiKey): self
@@ -109,6 +114,13 @@ class Factory
         return $this;
     }
 
+    public function setCacheEmbeddings(bool $cacheEmbeddings): self
+    {
+        $this->cacheEmbeddings = $cacheEmbeddings;
+
+        return $this;
+    }
+
     /**
      * Creates a new Open AI Client.
      */
@@ -126,6 +138,6 @@ class Factory
 
         $baseUrl = rtrim($this->baseUrl ?: 'https://api.openai.com/v1', '/') . '/';
 
-        return new OpenAI($baseUrl, $headers, $this->timeout, $this->pricing);
+        return new OpenAI($baseUrl, $headers, $this->timeout, $this->pricing, $this->cacheEmbeddings);
     }
 }

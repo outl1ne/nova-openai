@@ -4,6 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities;
 
 use Closure;
 use Exception;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\CachedResponse;
 use Outl1ne\NovaOpenAI\OpenAI;
 use Outl1ne\NovaOpenAI\Pricing\Calculator;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
@@ -95,6 +96,18 @@ abstract class CapabilityClient
         }
 
         return $response;
+    }
+
+    protected function handleCachedResponse(CachedResponse $cachedResponse, ?callable $handleResponse = null)
+    {
+        $this->request->time_sec = $this->measure();
+        $this->request->status = 'cache';
+        if ($handleResponse !== null) $handleResponse($cachedResponse);
+        $this->store();
+
+        $cachedResponse->request = $this->request;
+
+        return $cachedResponse;
     }
 
     public function handleException(Exception $e)

@@ -72,6 +72,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestStatus::PENDING->value => 'bg-zinc-600 text-zinc-200',
                     OpenAIRequestStatus::SUCCESS->value => 'bg-emerald-600 text-emerald-200',
                     OpenAIRequestStatus::ERROR->value => 'bg-rose-600 text-rose-200',
+                    OpenAIRequestStatus::CACHE->value => 'bg-gray-600 text-gray-200',
                 ])->sortable(),
             Badge::make('Method')
                 ->types([
