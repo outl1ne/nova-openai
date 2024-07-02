@@ -73,6 +73,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestStatus::SUCCESS->value => 'bg-emerald-600 text-emerald-200',
                     OpenAIRequestStatus::ERROR->value => 'bg-rose-600 text-rose-200',
                     OpenAIRequestStatus::CACHE->value => 'bg-gray-600 text-gray-200',
+                    OpenAIRequestStatus::STREAMING->value => 'bg-indigo-600 text-indigo-200',
                 ])->sortable(),
             Badge::make('Method')
                 ->types([
@@ -85,7 +86,7 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::FILES->value => 'bg-gray-600 text-gray-200',
                 ])->sortable(),
             Number::make('Cost', 'cost')->sortable()->displayUsing(fn ($value) => $value === null ? null : '$' . number_format($value, 4)),
-            Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn () => "{$this->time_sec} sec"),
+            Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn () => $this->time_sec !== null ? "{$this->time_sec} sec" : null),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
             Text::make('Tokens', 'usage_total_tokens')->sortable(),

@@ -11,6 +11,7 @@ class Capability
     public Closure $shouldStoreCallback;
     public Closure $shouldStoreErrorsCallback;
     public Closure $storingCallback;
+    public ?Closure $streamCallback = null;
 
     public function __construct(
         public readonly OpenAI $openAI,
@@ -21,27 +22,33 @@ class Capability
         $this->storing(fn ($model) => $model);
     }
 
-    public function shouldStorePending(Closure $callback): self
+    public function shouldStorePending(Closure $callback): static
     {
         $this->shouldStorePendingCallback = $callback;
         return $this;
     }
 
-    public function shouldStore(Closure $callback): self
+    public function shouldStore(Closure $callback): static
     {
         $this->shouldStoreCallback = $callback;
         return $this;
     }
 
-    public function shouldStoreErrors(Closure $callback): self
+    public function shouldStoreErrors(Closure $callback): static
     {
         $this->shouldStoreErrorsCallback = $callback;
         return $this;
     }
 
-    public function storing(Closure $callback): self
+    public function storing(Closure $callback): static
     {
         $this->storingCallback = $callback;
+        return $this;
+    }
+
+    public function stream(Closure $callback): static
+    {
+        $this->streamCallback = $callback;
         return $this;
     }
 }
