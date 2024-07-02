@@ -54,7 +54,7 @@ $assistant = OpenAI::assistants()->create(
 );
 $assistantModified = OpenAI::assistants()->modify($assistant->id, null, 'Allan\'s assistant!');
 $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
-// dd($assistant->response()->json(), $assistantModified->response()->json(), $deletedAssistant->response()->json());
+// dd($assistant->response->json(), $assistantModified->response->json(), $deletedAssistant->response->json());
 ```
 
 Attaching, listing and deleting files.
@@ -84,9 +84,9 @@ $deletedAssistantFile = OpenAI::assistants()->files()->delete($assistant->id, $f
 $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
 $deletedFile = OpenAI::files()->delete($file->id);
 // dd(
-//     $assistantFile->response()->json(),
-//     $assistantFiles->response()->json(),
-//     $deletedAssistantFile->response()->json(),
+//     $assistantFile->response->json(),
+//     $assistantFiles->response->json(),
+//     $deletedAssistantFile->response->json(),
 // );
 ```
 
@@ -97,7 +97,6 @@ $response = OpenAI::chat()->create(
     model: 'gpt-3.5-turbo',
     messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
 );
-$data = $response->response()->json();
 ```
 
 Enable JSON response formatting:
@@ -107,6 +106,17 @@ $response = OpenAI::chat()->create(
     model: 'gpt-3.5-turbo',
     messages: (new Messages)->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
     responseFormat: (new ResponseFormat)->json(),
+);
+```
+
+#### Streaming
+
+```php
+$response = OpenAI::chat()->stream(function (string $newChunk, string $message) {
+    echo $newChunk;
+})->create(
+    model: 'gpt-3.5-turbo',
+    messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
 );
 ```
 
@@ -145,7 +155,7 @@ $file = OpenAI::files()->upload(
 $files = OpenAI::files()->list();
 $file2 = OpenAI::files()->retrieve($file->id);
 $deletedFile = OpenAI::files()->delete($file->id);
-// dd($file->response()->json(), $file2->response()->json(), $deletedFile->response()->json());
+// dd($file->response->json(), $file2->response->json(), $deletedFile->response->json());
 ```
 
 Retrieving a file content.
@@ -185,13 +195,13 @@ $messages = OpenAI::threads()->messages()->list($thread->id);
 $deletedThread = OpenAI::threads()->delete($thread->id);
 $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
 // dd(
-//     $assistant->response()->json(),
-//     $thread->response()->json(),
-//     $message->response()->json(),
-//     $run->response()->json(),
-//     $messages->response()->json(),
-//     $deletedThread->response()->json(),
-//     $deletedAssistant->response()->json(),
+//     $assistant->response->json(),
+//     $thread->response->json(),
+//     $message->response->json(),
+//     $run->response->json(),
+//     $messages->response->json(),
+//     $deletedThread->response->json(),
+//     $deletedAssistant->response->json(),
 // );
 ```
 

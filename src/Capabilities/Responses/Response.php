@@ -18,18 +18,13 @@ class Response
     public ?string $model = null;
 
     public function __construct(
-        protected readonly HttpResponse $response,
+        public readonly HttpResponse $response,
     ) {
         $this->data = $response->json();
         $this->headers = $response->headers();
 
         $this->usage = $this->createUsage();
         $this->rateLimit = $this->createRateLimit();
-    }
-
-    public function response()
-    {
-        return $this->response;
     }
 
     protected function createUsage()

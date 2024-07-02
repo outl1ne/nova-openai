@@ -4,12 +4,14 @@ namespace Outl1ne\NovaOpenAI\Capabilities;
 
 use Closure;
 use Exception;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\CachedResponse;
 use Outl1ne\NovaOpenAI\OpenAI;
+use Outl1ne\NovaOpenAI\StreamHandler;
 use Outl1ne\NovaOpenAI\Pricing\Calculator;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 use Illuminate\Http\Client\Response as HttpResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\CachedResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\StreamChunk;
 
 abstract class CapabilityClient
 {
@@ -28,6 +30,9 @@ abstract class CapabilityClient
         $this->request->arguments = [];
         if ($capability->streamCallback instanceof Closure) {
             $this->request->appendArgument('stream', true);
+            $this->request->appendArgument('stream_options', [
+                'include_usage' => true,
+            ]);
         }
     }
 
@@ -72,28 +77,35 @@ abstract class CapabilityClient
 
     protected function isStreamedResponse(HttpResponse $response)
     {
-        return $response->getBody() instanceof \Psr\Http\Message\StreamInterface && $response->getBody()->isReadable();
+        return strpos($response->getHeaderLine('Content-Type'), 'text/event-stream') !== false;
     }
 
-    protected function handleStreamedResponse(HttpResponse $response)
+    protected function handleStreamedResponse(HttpResponse $httpResponse, ?callable $handleResponse = null)
     {
         if (!$this->capability->streamCallback instanceof Closure) {
             throw new Exception('Response is a stream but stream callback is not defined.');
         }
 
-        $body = $response->getBody();
-        $i = 0;
-        $rawResult = '';
-        while (!$body->eof()) {
-            $rawChunk = $body->read(1024);
-            $rawResult .= $rawChunk;
-            // dd($chunk);
-            echo "[{$i}] ";
-            echo $chunk;
-            $i++;
-            $result .= $chunk;
-            ($this->capability->streamCallback)($chunk, $result);
-        }
+        $response = (new StreamHandler($httpResponse, $this->capability->streamCallback, function (StreamChunk $streamChunk) {
+            $this->request->status = 'streaming';
+            $this->request->meta = $streamChunk?->meta;
+            $this->request->model_used = $streamChunk?->model;
+            if (($this->capability->shouldStoreCallback)($streamChunk)) {
+                $this->request->save();
+            }
+        }))->handle();
+
+        $this->request->cost = $this->calculateCost($response);
+        $this->request->time_sec = $this->measure();
+        $this->request->status = 'success';
+        $this->request->meta = $response?->meta;
+        $this->request->usage_prompt_tokens = $response->usage?->promptTokens;
+        $this->request->usage_completion_tokens = $response->usage?->completionTokens;
+        $this->request->usage_total_tokens = $response->usage?->totalTokens;
+
+        if ($handleResponse !== null) $handleResponse($response);
+        $this->store($response);
+        $response->request = $this->request;
 
         return $response;
     }

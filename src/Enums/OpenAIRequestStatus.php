@@ -12,6 +12,7 @@ enum OpenAIRequestStatus: string
     case SUCCESS = 'success';
     case ERROR = 'error';
     case CACHE = 'cache';
+    case STREAMING = 'streaming';
 
     public function label(): string
     {
@@ -19,7 +20,7 @@ enum OpenAIRequestStatus: string
             self::PENDING => 'Pending',
             self::SUCCESS => 'Success',
             self::ERROR => 'Error',
-            self::CACHE => 'Cache',
+            self::STREAMING => 'Streaming',
         };
     }
 }

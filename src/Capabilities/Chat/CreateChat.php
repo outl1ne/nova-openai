@@ -8,6 +8,7 @@ use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatResponse;
 
 class CreateChat extends CapabilityClient
 {
@@ -31,7 +32,7 @@ class CreateChat extends CapabilityClient
         ?float $topP = null,
         ?array $tools = null,
         null|string|array $toolChoice = null,
-    ): ChatResponse|Response {
+    ): ChatResponse|StreamedChatResponse {
         $this->request->model_requested = $model;
         $this->request->input = $messages->messages;
         $this->request->appendArgument('response_format', $responseFormat->responseFormat ?? null);
@@ -60,16 +61,16 @@ class CreateChat extends CapabilityClient
             ]);
             $response->throw();
 
-            // if ($this->isStreamedResponse($response)) {
-            //     return $this->handleStreamedResponse($response);
-            // }
+            if ($this->isStreamedResponse($response)) {
+                return $this->handleStreamedResponse($response, [$this, 'response']);
+            }
             return $this->handleResponse(new ChatResponse($response), [$this, 'response']);
         } catch (Exception $e) {
             $this->handleException($e);
         }
     }
 
-    protected function response(ChatResponse $response)
+    protected function response(ChatResponse|StreamedChatResponse $response)
     {
         $this->request->output = $response->choices;
     }
