@@ -18,10 +18,11 @@ class ListFiles extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("files", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("files", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new FileListResponse($response));
         } catch (Exception $e) {

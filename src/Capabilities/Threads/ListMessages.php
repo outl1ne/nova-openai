@@ -25,10 +25,11 @@ class ListMessages extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("threads/{$threadId}/messages", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("threads/{$threadId}/messages", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new MessagesResponse($response), [$this, 'response']);
         } catch (Exception $e) {

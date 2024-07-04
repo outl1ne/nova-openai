@@ -2,7 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Responses;
 
-use Illuminate\Http\Client\Response as HttpResponse;
+use GuzzleHttp\Psr7\Response as HttpResponse;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 
 class Response
@@ -13,15 +13,15 @@ class Response
     public ?RateLimit $rateLimit;
     public OpenAIRequest $request;
 
-    public readonly array $data;
+    public readonly ?array $data;
     public readonly array $headers;
     public ?string $model = null;
 
     public function __construct(
         public readonly HttpResponse $response,
     ) {
-        $this->data = $response->json();
-        $this->headers = $response->headers();
+        $this->data = json_decode($response->getBody(), true);
+        $this->headers = $response->getHeaders();
 
         $this->usage = $this->createUsage();
         $this->rateLimit = $this->createRateLimit();

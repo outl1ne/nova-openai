@@ -20,14 +20,19 @@ class UploadFile extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->attach(
-                'file',
-                $file,
-                $filename,
-            )->post("files", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post("files", [
+                'multipart' => [
+                    [
+                        'name' => 'file',
+                        'contents' => $file,
+                        'filename' => $filename,
+                    ],
+                    [
+                        'name' => 'purpose',
+                        'contents' => $purpose,
+                    ],
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new FileResponse($response));
         } catch (Exception $e) {

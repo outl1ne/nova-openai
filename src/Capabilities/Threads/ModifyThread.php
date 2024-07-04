@@ -19,10 +19,14 @@ class ModifyThread extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("threads/{$threadId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post("threads/{$threadId}", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new ThreadResponse($response));
         } catch (Exception $e) {

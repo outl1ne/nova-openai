@@ -17,8 +17,11 @@ class DeleteAssistantFile extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->delete("assistants/{$assistantId}/files/{$fileId}");
-            $response->throw();
+            $response = $this->openAI->http()->delete("assistants/{$assistantId}/files/{$fileId}", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
 
             return $this->handleResponse(new DeleteResponse($response));
         } catch (Exception $e) {

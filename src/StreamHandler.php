@@ -4,13 +4,14 @@ namespace Outl1ne\NovaOpenAI;
 
 use Closure;
 use Exception;
-use Illuminate\Http\Client\Response;
+use Illuminate\Support\Str;
+use Psr\Http\Message\ResponseInterface;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatChunk;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatResponse;
 
 class StreamHandler
 {
-    public function __construct(protected Response $response, protected Closure $streamCallback, protected Closure $firstChunkCallback)
+    public function __construct(protected ResponseInterface $response, protected Closure $streamCallback, protected Closure $firstChunkCallback)
     {
     }
 

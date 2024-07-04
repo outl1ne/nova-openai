@@ -5,13 +5,15 @@ namespace Outl1ne\NovaOpenAI\Capabilities;
 use Closure;
 use Exception;
 use Outl1ne\NovaOpenAI\OpenAI;
+use GuzzleHttp\Promise\Promise;
 use Outl1ne\NovaOpenAI\StreamHandler;
+use Psr\Http\Message\ResponseInterface;
 use Outl1ne\NovaOpenAI\Pricing\Calculator;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
-use Illuminate\Http\Client\Response as HttpResponse;
+use GuzzleHttp\Psr7\Response as HttpResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
-use Outl1ne\NovaOpenAI\Capabilities\Responses\CachedResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\StreamChunk;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\CachedResponse;
 
 abstract class CapabilityClient
 {
@@ -80,20 +82,24 @@ abstract class CapabilityClient
         return strpos($response->getHeaderLine('Content-Type'), 'text/event-stream') !== false;
     }
 
-    protected function handleStreamedResponse(HttpResponse $httpResponse, ?callable $handleResponse = null)
+    protected function handleStreamedResponse(Promise $promise, ?callable $handleResponse = null)
     {
         if (!$this->capability->streamCallback instanceof Closure) {
             throw new Exception('Response is a stream but stream callback is not defined.');
         }
 
-        $response = (new StreamHandler($httpResponse, $this->capability->streamCallback, function (StreamChunk $streamChunk) {
-            $this->request->status = 'streaming';
-            $this->request->meta = $streamChunk?->meta;
-            $this->request->model_used = $streamChunk?->model;
-            if (($this->capability->shouldStoreCallback)($streamChunk)) {
-                $this->request->save();
-            }
-        }))->handle();
+        $chainedPromise = $promise->then(function (ResponseInterface $stream) {
+            $response = (new StreamHandler($stream, $this->capability->streamCallback, function (StreamChunk $streamChunk) {
+                $this->request->status = 'streaming';
+                $this->request->meta = $streamChunk?->meta;
+                $this->request->model_used = $streamChunk?->model;
+                if (($this->capability->shouldStoreCallback)($streamChunk)) {
+                    $this->request->save();
+                }
+            }))->handle();
+            return $response;
+        });
+        $response = $chainedPromise->wait();
 
         $this->request->cost = $this->calculateCost($response);
         $this->request->time_sec = $this->measure();

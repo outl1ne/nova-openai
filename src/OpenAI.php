@@ -3,9 +3,8 @@
 namespace Outl1ne\NovaOpenAI;
 
 use Closure;
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 use Outl1ne\NovaOpenAI\Pricing\Pricing;
-use Illuminate\Http\Client\PendingRequest;
 use Outl1ne\NovaOpenAI\Cache\EmbeddingsCache;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Chat;
 use Outl1ne\NovaOpenAI\Capabilities\Files\Files;
@@ -56,8 +55,12 @@ class OpenAI
         return new Files($this);
     }
 
-    public function http(): PendingRequest
+    public function http(): Client
     {
-        return clone Http::baseUrl($this->baseUrl)->timeout($this->timeout)->withHeaders($this->headers);
+        return new Client([
+            'base_uri' => $this->baseUrl,
+            'timeout' => $this->timeout,
+            'headers' => $this->headers,
+        ]);
     }
 }

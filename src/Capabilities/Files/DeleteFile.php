@@ -4,7 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Files;
 
 use Exception;
 use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
-use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\DeleteResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\FileDeleteResponse;
 
 class DeleteFile extends CapabilityClient
 {
@@ -12,16 +12,20 @@ class DeleteFile extends CapabilityClient
 
     public function makeRequest(
         string $fileId,
-    ): DeleteResponse {
+    ): FileDeleteResponse {
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->delete("files/{$fileId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->delete("files/{$fileId}", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
-            return $this->handleResponse(new DeleteResponse($response));
+            return $this->handleResponse(new FileDeleteResponse($response));
         } catch (Exception $e) {
             $this->handleException($e);
         }

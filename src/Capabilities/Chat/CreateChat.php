@@ -3,7 +3,12 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Chat;
 
 use Exception;
-use Illuminate\Http\Client\Response;
+use GuzzleHttp\Promise\Promise;
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
@@ -54,14 +59,32 @@ class CreateChat extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post('chat/completions', [
-                'model' => $model,
-                'messages' => $messages->messages,
-                ...$this->request->arguments,
-            ]);
-            $response->throw();
+            if (isset($this->request->arguments['stream'])) {
+                $response = $this->openAI->http()->postAsync('chat/completions', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'body' => json_encode([
+                        'model' => $model,
+                        'messages' => $messages->messages,
+                        ...$this->request->arguments,
+                    ]),
+                    'stream' => true,
+                ]);
+            } else {
+                $response = $this->openAI->http()->post('chat/completions', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                    ],
+                    'body' => json_encode([
+                        'model' => $model,
+                        'messages' => $messages->messages,
+                        ...$this->request->arguments,
+                    ]),
+                ]);
+            }
 
-            if ($this->isStreamedResponse($response)) {
+            if ($response instanceof Promise) {
                 return $this->handleStreamedResponse($response, [$this, 'response']);
             }
             return $this->handleResponse(new ChatResponse($response), [$this, 'response']);

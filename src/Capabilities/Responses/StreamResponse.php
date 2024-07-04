@@ -2,7 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Responses;
 
-use Illuminate\Http\Client\Response;
+use GuzzleHttp\Psr7\Response;
 use Outl1ne\NovaOpenAI\Models\OpenAIRequest;
 
 class StreamResponse

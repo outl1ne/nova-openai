@@ -31,10 +31,11 @@ class RetrieveFileContent extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("files/{$assistantId}/content", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("files/{$assistantId}/content", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new FileContentResponse($response));
         } catch (Exception $e) {

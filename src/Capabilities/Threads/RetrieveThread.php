@@ -18,8 +18,7 @@ class RetrieveThread extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("threads/{$threadId}");
-            $response->throw();
+            $response = $this->openAI->http()->get("threads/{$threadId}");
 
             return $this->handleResponse(new ThreadResponse($response));
         } catch (Exception $e) {

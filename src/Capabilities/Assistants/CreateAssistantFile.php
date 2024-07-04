@@ -19,10 +19,14 @@ class CreateAssistantFile extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("assistants/{$assistantId}/files", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post("assistants/{$assistantId}/files", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new AssistantFileResponse($response));
         } catch (Exception $e) {

@@ -16,10 +16,11 @@ class RetrieveFile extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("files/{$fileId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("files/{$fileId}", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new FileResponse($response));
         } catch (Exception $e) {
