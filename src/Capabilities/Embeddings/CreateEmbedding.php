@@ -34,13 +34,16 @@ class CreateEmbedding extends CapabilityClient
                 'model' => $model,
                 'input' => $input,
                 ...$this->request->arguments,
-            ], fn (...$args) => $this->openAI->http()->withHeader('Content-Type', 'application/json')->post('embeddings', ...$args));
+            ], fn ($args) => $this->openAI->http()->post('embeddings', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode($args),
+            ]));
 
             if ($response instanceof CachedEmbeddingsResponse) {
                 return $this->handleCachedResponse($response, [$this, 'cachedResponse']);
             } else {
-                $response->throw();
-
                 $result = $this->handleResponse(new EmbeddingsResponse($response), [$this, 'response']);
 
                 $this->capability->cache->put([

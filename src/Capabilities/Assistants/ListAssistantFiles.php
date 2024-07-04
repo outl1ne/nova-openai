@@ -26,10 +26,11 @@ class ListAssistantFiles extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("assistants/{$assistantId}/files", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("assistants/{$assistantId}/files", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new AssistantFileListResponse($response));
         } catch (Exception $e) {

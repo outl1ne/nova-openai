@@ -21,11 +21,15 @@ class CreateThread extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post('threads', [
-                'messages' => $messages->messages ?? null,
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post('threads', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    'messages' => $messages->messages ?? null,
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new ThreadResponse($response));
         } catch (Exception $e) {

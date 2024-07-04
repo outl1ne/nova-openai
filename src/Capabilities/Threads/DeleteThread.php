@@ -17,10 +17,14 @@ class DeleteThread extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->delete("threads/{$threadId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->delete("threads/{$threadId}", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new ThreadDeletionStatusResponse($response));
         } catch (Exception $e) {

@@ -25,10 +25,11 @@ class RetrieveRun extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->get("threads/{$threadId}/runs/{$runId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("threads/{$threadId}/runs/{$runId}", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new RunResponse($response));
         } catch (Exception $e) {

@@ -16,10 +16,14 @@ class DeleteAssistant extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->delete("assistants/{$assistantId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->delete("assistants/{$assistantId}", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new DeleteResponse($response));
         } catch (Exception $e) {

@@ -30,10 +30,14 @@ class CreateAssistant extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("assistants", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post("assistants", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new AssistantResponse($response));
         } catch (Exception $e) {

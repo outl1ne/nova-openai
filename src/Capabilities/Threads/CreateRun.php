@@ -30,10 +30,14 @@ class CreateRun extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("threads/{$threadId}/runs", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->post("threads/{$threadId}/runs", [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+                'body' => json_encode([
+                    ...$this->request->arguments,
+                ]),
             ]);
-            $response->throw();
 
             return $this->handleResponse(new RunResponse($response));
         } catch (Exception $e) {

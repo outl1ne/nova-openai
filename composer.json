@@ -15,7 +15,8 @@
         "outl1ne/nova-translations-loader": "^5.0"
     },
     "require-dev": {
-        "nova-kit/nova-devtool": "^1.5"
+        "nova-kit/nova-devtool": "^1.5",
+        "phpunit/phpunit": "^11.1"
     },
     "autoload": {
         "psr-4": {

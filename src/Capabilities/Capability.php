@@ -4,6 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities;
 
 use Closure;
 use Outl1ne\NovaOpenAI\OpenAI;
+use Outl1ne\NovaOpenAI\Cache\CacheInterface;
 
 class Capability
 {
@@ -12,6 +13,7 @@ class Capability
     public Closure $shouldStoreErrorsCallback;
     public Closure $storingCallback;
     public ?Closure $streamCallback = null;
+    public ?CacheInterface $cache;
 
     public function __construct(
         public readonly OpenAI $openAI,

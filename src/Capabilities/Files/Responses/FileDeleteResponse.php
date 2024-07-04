@@ -4,7 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Files\Responses;
 
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 
-class DeleteResponse extends Response
+class FileDeleteResponse extends Response
 {
     public string $id;
 

@@ -3,10 +3,11 @@
 namespace Outl1ne\NovaOpenAI\Cache;
 
 use Illuminate\Support\Facades\Cache;
-use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses\CachedEmbeddingsResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
 use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses\EmbeddingsResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Responses\CachedEmbeddingsResponse;
 
-class EmbeddingsCache
+class EmbeddingsCache implements CacheInterface
 {
     public function __construct(readonly bool $enabled)
     {
@@ -25,8 +26,9 @@ class EmbeddingsCache
         return $callback($arguments);
     }
 
-    public function put(array $arguments, EmbeddingsResponse $result)
+    public function put(array $arguments, Response $result)
     {
+        if (!$result instanceof EmbeddingsResponse) return;
         if (!$this->enabled) return;
 
         Cache::put($this->cacheKey($arguments['model'], $arguments['input'], $arguments), [

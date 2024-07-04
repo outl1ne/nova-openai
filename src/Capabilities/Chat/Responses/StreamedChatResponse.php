@@ -2,7 +2,7 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Chat\Responses;
 
-use Illuminate\Http\Client\Response;
+use GuzzleHttp\Psr7\Response;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\StreamChunk;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\StreamResponse;
 

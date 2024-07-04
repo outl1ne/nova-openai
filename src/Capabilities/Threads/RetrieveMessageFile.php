@@ -18,10 +18,11 @@ class RetrieveMessageFile extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->withHeader('Content-Type', 'application/json')->post("threads/{$threadId}/messages{$messageId}/files/{$fileId}", [
-                ...$this->request->arguments,
+            $response = $this->openAI->http()->get("threads/{$threadId}/messages{$messageId}/files/{$fileId}", [
+                'query' => [
+                    ...$this->request->arguments,
+                ],
             ]);
-            $response->throw();
 
             return $this->handleResponse(new MessageFileResponse($response));
         } catch (Exception $e) {
