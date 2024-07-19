@@ -32,7 +32,7 @@ class StreamHandler
 
             $rawResult = $lastLine;
 
-            $newChunks = collect($lines)->map(fn ($line) => $this->convertLineToArray($line))->filter()->map(fn ($line) => new StreamedChatChunk($line));
+            $newChunks = collect($lines)->map(fn ($line) => $this->convertLineToArray($line))->filter(fn ($value) => $value !== null)->map(fn ($line) => new StreamedChatChunk($line));
             $allChunks = $allChunks->merge($newChunks);
 
             if ($firstLoop) {
@@ -40,8 +40,8 @@ class StreamHandler
             }
 
             ($this->streamCallback)(
-                $newChunks->map(fn ($streamChunk) => $streamChunk->choices[0]['delta']['content'] ?? null)->filter()->join(''),
-                $allChunks->map(fn ($streamChunk) => $streamChunk->choices[0]['delta']['content'] ?? null)->filter()->join(''),
+                $newChunks->map(fn ($streamChunk) => $streamChunk->choices[0]['delta']['content'] ?? null)->filter(fn ($value) => $value !== null)->join(''),
+                $allChunks->map(fn ($streamChunk) => $streamChunk->choices[0]['delta']['content'] ?? null)->filter(fn ($value) => $value !== null)->join(''),
             );
 
             $firstLoop = false;
