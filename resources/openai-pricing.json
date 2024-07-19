@@ -1,5 +1,21 @@
 {
   "models": {
+    "gpt-4o": {
+      "input": 0.005,
+      "output": 0.015
+    },
+    "gpt-4o-2024-05-13": {
+      "input": 0.005,
+      "output": 0.015
+    },
+    "gpt-4o-mini": {
+      "input": 0.00015,
+      "output": 0.0006
+    },
+    "gpt-4o-mini-2024-07-18": {
+      "input": 0.00015,
+      "output": 0.0006
+    },
     "gpt-4-turbo-2024-04-09": {
       "input": 0.01,
       "output": 0.03
@@ -19,14 +35,6 @@
     "gpt-4": {
       "input": 0.03,
       "output": 0.06
-    },
-    "gpt-4o-2024-05-13": {
-      "input": 0.005,
-      "output": 0.015
-    },
-    "gpt-4o": {
-      "input": 0.005,
-      "output": 0.015
     },
     "gpt-4-32k": {
       "input": 0.06,
