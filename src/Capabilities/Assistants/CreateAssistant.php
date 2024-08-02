@@ -32,7 +32,7 @@ class CreateAssistant extends CapabilityClient
         $this->request->appendArgument('metadata', $metadata);
         $this->request->appendArgument('temperature', $temperature);
         $this->request->appendArgument('top_p', $topP);
-        $this->request->appendArgument('response_format', $responseFormat);
+        $this->request->appendArgument('response_format', $responseFormat->responseFormat ?? null);
 
         $this->pending();
 

@@ -28,7 +28,7 @@ class AssistantTest extends \Orchestra\Testbench\TestCase
             'gpt-4o-mini',
             'Allan\'s assistant',
             'For testing purposes of nova-openai package.',
-            'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
+            'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.',
         );
         $this->assertTrue($assistant instanceof AssistantResponse);
 
