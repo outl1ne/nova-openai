@@ -50,6 +50,9 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
         while ($status !== 'completed') {
             $runStatus = OpenAI::threads()->run()->retrieve($thread->id, $run->id);
             $this->assertTrue($runStatus instanceof RunResponse);
+            if ($runStatus->status === 'completed') {
+                $status = 'completed';
+            }
             sleep(1);
         }
 
