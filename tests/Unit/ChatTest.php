@@ -23,7 +23,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     public function test_chat(): void
     {
         $response = OpenAI::chat()->create(
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o-mini',
             messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
         );
         $this->assertTrue($response instanceof ChatResponse);
@@ -33,7 +33,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     public function test_chat_json_response(): void
     {
         $response = OpenAI::chat()->create(
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o-mini',
             messages: (new Messages)->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
             responseFormat: (new ResponseFormat)->json(),
         );
@@ -46,7 +46,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->stream(function (string $newChunk, string $message) {
         })->create(
-            model: 'gpt-3.5-turbo',
+            model: 'gpt-4o-mini',
             messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
         );
         $this->assertTrue($response instanceof StreamedChatResponse);

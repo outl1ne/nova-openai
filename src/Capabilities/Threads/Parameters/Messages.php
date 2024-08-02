@@ -6,14 +6,14 @@ class Messages
 {
     public array $messages = [];
 
-    public function user(string $content, ?array $fileIds = null, ?array $metadata = null): self
+    public function user(string $content, ?array $attachments = null, ?array $metadata = null): self
     {
         $message = [
             'role' => 'user',
             'content' => $content,
         ];
 
-        $message = $this->addOptionalProperty($message, 'file_ids', $fileIds);
+        $message = $this->addOptionalProperty($message, 'attachments', $attachments);
         $message = $this->addOptionalProperty($message, 'metadata', $metadata);
 
         $this->messages[] = $message;

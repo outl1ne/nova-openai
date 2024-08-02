@@ -17,7 +17,7 @@ class CreateMessage extends CapabilityClient
     ): MessageResponse {
         $this->request->appendArgument('role', $message->role);
         $this->request->appendArgument('content', $message->content);
-        $this->request->appendArgument('file_ids', $message->fileIds);
+        $this->request->appendArgument('attachments', $message->attachments);
         $this->request->appendArgument('metadata', $message->metadata);
 
         $this->pending();

@@ -23,7 +23,7 @@ class MessageResponse extends Response
         $this->appendMeta('thread_id', $this->data['thread_id']);
         $this->appendMeta('run_id', $this->data['run_id']);
         $this->appendMeta('role', $this->data['role']);
-        $this->appendMeta('file_ids', $this->data['file_ids']);
+        $this->appendMeta('attachments', $this->data['attachments']);
         $this->appendMeta('metadata', $this->data['metadata']);
         $this->content = $this->data['content'];
     }

@@ -28,7 +28,7 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
     public function test_threads(): void
     {
         $assistant = OpenAI::assistants()->create(
-            'gpt-3.5-turbo',
+            'gpt-4o-mini',
             'Allan',
             'nova-openai testimiseks',
             'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
