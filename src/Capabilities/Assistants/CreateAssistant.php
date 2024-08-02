@@ -4,6 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Assistants;
 
 use Exception;
 use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantResponse;
 
 class CreateAssistant extends CapabilityClient
@@ -16,16 +17,22 @@ class CreateAssistant extends CapabilityClient
         ?string $description = null,
         ?string $instructions = null,
         ?array $tools = null,
-        ?array $fileIds = null,
+        ?array $toolResources = null,
         ?array $metadata = null,
+        ?float $temperature = null,
+        ?float $topP = null,
+        ?ResponseFormat $responseFormat = null,
     ): AssistantResponse {
         $this->request->appendArgument('model', $model);
         $this->request->appendArgument('name', $name);
         $this->request->appendArgument('description', $description);
         $this->request->appendArgument('instructions', $instructions);
         $this->request->appendArgument('tools', $tools);
-        $this->request->appendArgument('file_ids', $fileIds);
+        $this->request->appendArgument('tool_resources', $toolResources);
         $this->request->appendArgument('metadata', $metadata);
+        $this->request->appendArgument('temperature', $temperature);
+        $this->request->appendArgument('top_p', $topP);
+        $this->request->appendArgument('response_format', $responseFormat);
 
         $this->pending();
 

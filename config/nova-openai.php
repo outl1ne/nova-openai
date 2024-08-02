@@ -34,7 +34,7 @@ return [
     */
 
     'headers' => [
-        'OpenAI-Beta' => 'assistants=v1',
+        'OpenAI-Beta' => 'assistants=v2',
     ],
 
     /*

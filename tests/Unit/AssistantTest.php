@@ -25,7 +25,7 @@ class AssistantTest extends \Orchestra\Testbench\TestCase
     public function test_assistant(): void
     {
         $assistant = OpenAI::assistants()->create(
-            'gpt-3.5-turbo',
+            'gpt-4o-mini',
             'Allan\'s assistant',
             'For testing purposes of nova-openai package.',
             'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
@@ -42,13 +42,13 @@ class AssistantTest extends \Orchestra\Testbench\TestCase
     public function test_assistant_files(): void
     {
         $assistant = OpenAI::assistants()->create(
-            'gpt-3.5-turbo',
+            'gpt-4o-mini',
             'Allan\'s assistant',
             'For testing purposes of nova-openai package.',
             'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.',
             [
                 [
-                    'type' => 'retrieval',
+                    'type' => 'file_search',
                 ],
             ],
         );

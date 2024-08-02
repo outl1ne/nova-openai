@@ -3,6 +3,7 @@
 namespace Outl1ne\NovaOpenAI\Capabilities\Assistants;
 
 use Outl1ne\NovaOpenAI\Capabilities\Capability;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
 
 class Assistants extends Capability
 {
@@ -12,8 +13,11 @@ class Assistants extends Capability
         ?string $description = null,
         ?string $instructions = null,
         ?array $tools = null,
-        ?array $fileIds = null,
+        ?array $toolResources = null,
         ?array $metadata = null,
+        ?float $temperature = null,
+        ?float $topP = null,
+        ?ResponseFormat $responseFormat = null,
     ) {
         return (new CreateAssistant($this))->makeRequest(
             $model,
@@ -21,8 +25,11 @@ class Assistants extends Capability
             $description,
             $instructions,
             $tools,
-            $fileIds,
+            $toolResources,
             $metadata,
+            $temperature,
+            $topP,
+            $responseFormat,
         );
     }
 
@@ -33,8 +40,11 @@ class Assistants extends Capability
         ?string $description = null,
         ?string $instructions = null,
         ?array $tools = null,
-        ?array $fileIds = null,
+        ?array $toolResources = null,
         ?array $metadata = null,
+        ?float $temperature = null,
+        ?float $topP = null,
+        ?ResponseFormat $responseFormat = null,
     ) {
         return (new ModifyAssistant($this))->makeRequest(
             $assistantId,
@@ -43,8 +53,11 @@ class Assistants extends Capability
             $description,
             $instructions,
             $tools,
-            $fileIds,
+            $toolResources,
             $metadata,
+            $temperature,
+            $topP,
+            $responseFormat,
         );
     }
 

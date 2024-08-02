@@ -22,7 +22,10 @@ class AssistantResponse extends Response
         $this->appendMeta('model', $this->data['model']);
         $this->appendMeta('instructions', $this->data['instructions']);
         $this->appendMeta('tools', $this->data['tools']);
-        $this->appendMeta('file_ids', $this->data['file_ids']);
+        $this->appendMeta('tool_resources', $this->data['tool_resources']);
         $this->appendMeta('metadata', $this->data['metadata']);
+        $this->appendMeta('temperature', $this->data['temperature']);
+        $this->appendMeta('top_p', $this->data['top_p']);
+        $this->appendMeta('response_format', $this->data['response_format']);
     }
 }

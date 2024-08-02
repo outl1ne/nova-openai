@@ -7,17 +7,17 @@ class Message
     public function __construct(
         public readonly string $role,
         public readonly string $content,
-        public readonly array $fileIds = [],
+        public readonly ?array $attachments = [],
         public readonly ?array $metadata = null,
     ) {
     }
 
-    static public function user(string $content, array $fileIds = [], ?array $metadata = null): self
+    static public function user(string $content, ?array $attachments = null, ?array $metadata = null): self
     {
         return new self(
             'user',
             $content,
-            $fileIds,
+            $attachments,
             $metadata,
         );
     }
