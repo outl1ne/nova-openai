@@ -31,7 +31,7 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
             'gpt-4o-mini',
             'Allan',
             'nova-openai testimiseks',
-            'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
+            'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand. Answer all questions from all messaged from the user in a single message.'
         );
         $this->assertTrue($assistant instanceof AssistantResponse);
 
@@ -42,6 +42,21 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
         $message = OpenAI::threads()->messages()
             ->create($thread->id, Message::user('How does AI work? Explain it in simple terms in one sentence.'));
         $this->assertTrue($message instanceof MessageResponse);
+
+        $message2 = OpenAI::threads()->messages()
+            ->create($thread->id, Message::user([
+                [
+                    'type' => 'text',
+                    'text' => 'Describe what\'s on the attached photo',
+                ],
+                [
+                    'type' => 'image_url',
+                    'image_url' => [
+                        'url' => 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
+                    ],
+                ],
+            ]));
+        $this->assertTrue($message2 instanceof MessageResponse);
 
         $run = OpenAI::threads()->run()->execute($thread->id, $assistant->id);
         $this->assertTrue($run instanceof RunResponse);
