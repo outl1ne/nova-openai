@@ -69,6 +69,20 @@ class Assistants extends Capability
         );
     }
 
+    public function list(
+        ?int $limit = null,
+        ?string $order = null,
+        ?string $after = null,
+        ?string $before = null,
+    ) {
+        return (new ListAssistants($this))->makeRequest(
+            $limit,
+            $order,
+            $after,
+            $before,
+        );
+    }
+
     public function files(): AssistantFiles
     {
         return new AssistantFiles($this->openAI);

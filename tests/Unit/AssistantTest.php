@@ -9,6 +9,7 @@ use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\FileDeleteResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\DeleteResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantFileResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantListResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantFileListResponse;
 
 class AssistantTest extends \Orchestra\Testbench\TestCase
@@ -34,6 +35,9 @@ class AssistantTest extends \Orchestra\Testbench\TestCase
 
         $assistantModified = OpenAI::assistants()->modify($assistant->id, null, 'Allan\'s assistant!');
         $this->assertTrue($assistantModified instanceof AssistantResponse);
+
+        $assistants = OpenAI::assistants()->list();
+        $this->assertTrue($assistants instanceof AssistantListResponse);
 
         $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
         $this->assertTrue($deletedAssistant instanceof DeleteResponse);
