@@ -6,7 +6,7 @@ class Messages
 {
     public array $messages = [];
 
-    public function system(string $content, ?string $name = null): self
+    public function system(string|array $content, ?string $name = null): self
     {
         $message = [
             'role' => 'system',
@@ -20,7 +20,7 @@ class Messages
         return $this;
     }
 
-    public function user(string $content, ?string $name = null): self
+    public function user(string|array $content, ?string $name = null): self
     {
         $message = [
             'role' => 'user',
@@ -34,7 +34,7 @@ class Messages
         return $this;
     }
 
-    public function assistant(?string $content = null, ?string $name = null, ?array $toolCalls): self
+    public function assistant(string|array|null $content = null, ?string $name = null, ?array $toolCalls): self
     {
         $message = [
             'role' => 'assistant',
@@ -49,7 +49,7 @@ class Messages
         return $this;
     }
 
-    public function tool(string $content, string $toolCallId): self
+    public function tool(string|array $content, string $toolCallId): self
     {
         $message = [
             'role' => 'system',

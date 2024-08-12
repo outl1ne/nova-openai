@@ -44,12 +44,32 @@ class ChatTest extends \Orchestra\Testbench\TestCase
 
     public function test_chat_stream(): void
     {
-        $response = OpenAI::chat()->stream(function (string $newChunk, string $message) {
-        })->create(
+        $response = OpenAI::chat()->stream(function (string $newChunk, string $message) {})->create(
             model: 'gpt-4o-mini',
             messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
         );
         $this->assertTrue($response instanceof StreamedChatResponse);
+        $this->assertIsArray($response->choices);
+    }
+
+    public function test_chat_image_url(): void
+    {
+        $response = OpenAI::chat()->create(
+            model: 'gpt-4o-mini',
+            messages: (new Messages)->system('You are a helpful assistant.')->user([
+                [
+                    'type' => 'text',
+                    'text' => 'Describe what\'s on the attached photo',
+                ],
+                [
+                    'type' => 'image_url',
+                    'image_url' => [
+                        'url' => 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
+                    ],
+                ],
+            ]),
+        );
+        $this->assertTrue($response instanceof ChatResponse);
         $this->assertIsArray($response->choices);
     }
 }
