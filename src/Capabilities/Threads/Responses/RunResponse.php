@@ -2,7 +2,9 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Threads\Responses;
 
+use Outl1ne\NovaOpenAI\Facades\OpenAI;
 use Outl1ne\NovaOpenAI\Capabilities\Responses\Response;
+use Outl1ne\NovaOpenAI\Exceptions\ThreadRunStatusFailedException;
 
 class RunResponse extends Response
 {
@@ -32,5 +34,25 @@ class RunResponse extends Response
         $this->appendMeta('instructions', $this->data['instructions']);
         $this->appendMeta('tools', $this->data['tools']);
         $this->appendMeta('metadata', $this->data['metadata']);
+    }
+
+    public function wait(?callable $errorCallback = null): RunResponse
+    {
+        $status = null;
+        while ($status !== 'completed') {
+            $runStatus = OpenAI::threads()->run()->retrieve($this->data['thread_id'], $this->data['id']);
+            if ($runStatus->status === 'failed') {
+                if (is_callable($errorCallback)) {
+                    $errorCallback();
+                } else {
+                    throw new ThreadRunStatusFailedException;
+                }
+            } else if ($runStatus->status === 'completed') {
+                $status = 'completed';
+            }
+            // sleep for 100ms
+            usleep(100_000);
+        }
+        return $runStatus;
     }
 }

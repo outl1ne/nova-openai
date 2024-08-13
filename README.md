@@ -177,18 +177,7 @@ $thread = OpenAI::threads()
     ->create((new ThreadMessages)->user('What is your purpose in one short sentence?'));
 $message = OpenAI::threads()->messages()
     ->create($thread->id, ThreadMessage::user('How does AI work? Explain it in simple terms in one sentence.'));
-$run = OpenAI::threads()->run()->execute($thread->id, $assistant->id);
-$status = null;
-while ($status !== 'completed') {
-    $runStatus = OpenAI::threads()->run()->retrieve($thread->id, $run->id);
-    if ($runStatus->status === 'completed') {
-        echo '# run completed' . PHP_EOL;
-        $status = 'completed';
-    } else {
-        echo '# run not completed yet, trying again' . PHP_EOL;
-    }
-    sleep(1);
-}
+$run = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
 $messages = OpenAI::threads()->messages()->list($thread->id);
 
 // cleanup

@@ -58,18 +58,9 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
             ]));
         $this->assertTrue($message2 instanceof MessageResponse);
 
-        $run = OpenAI::threads()->run()->execute($thread->id, $assistant->id);
+        $run = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
         $this->assertTrue($run instanceof RunResponse);
-
-        $status = null;
-        while ($status !== 'completed') {
-            $runStatus = OpenAI::threads()->run()->retrieve($thread->id, $run->id);
-            $this->assertTrue($runStatus instanceof RunResponse);
-            if ($runStatus->status === 'completed') {
-                $status = 'completed';
-            }
-            sleep(1);
-        }
+        $this->assertEquals($run->meta['status'], 'completed');
 
         $messages = OpenAI::threads()->messages()->list($thread->id);
         $this->assertTrue($messages instanceof MessagesResponse);
