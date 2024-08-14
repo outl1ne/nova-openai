@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('openai_requests', function (Blueprint $table) {
-            $table->longText('error')->nullable();
+            $table->longText('error')->nullable()->change();
         });
     }
 
