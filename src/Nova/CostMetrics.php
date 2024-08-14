@@ -17,21 +17,11 @@ class CostMetrics extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        $result = $this->sumByDays($request, OpenAIRequest::class, 'cost');
-
-        // Iterate over each day to format with 2 decimal places
-        $formattedTrend = collect($result->trend)->map(function ($value) {
-            return number_format($value, 2, '.', '');
-        });
-
-        // Sum the formatted values
-        $sum = $formattedTrend->sum();
-
-        return $result->trend($formattedTrend->toArray())
-            ->result($sum)
-            ->format([
-                'mantissa' => 2, // Ensure the result is formatted with 2 decimal places
-            ])->prefix('$');
+        $result = $this->precision(2)
+            ->sumByDays($request, OpenAIRequest::class, 'cost')
+            ->format('0.00')
+            ->prefix('$');
+        return $result->result(array_sum($result->trend));
     }
 
     /**
