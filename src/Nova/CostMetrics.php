@@ -18,7 +18,9 @@ class CostMetrics extends Trend
     public function calculate(NovaRequest $request)
     {
         $result = $this->sumByDays($request, OpenAIRequest::class, 'cost')->prefix('$');
-        return $result->result(array_sum($result->trend));
+        return $result->result(array_sum($result->trend))->format([
+            'mantissa' => 2,
+        ]);
     }
 
     /**
