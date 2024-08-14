@@ -55,7 +55,9 @@ class RunResponse extends Response
                 } else {
                     throw new ThreadRunStatusFailedException;
                 }
-            } else if ($runStatus->status === 'completed') {
+            } elseif ($runStatus->status === 'incomplete') {
+                $status = 'completed';
+            } elseif ($runStatus->status === 'completed') {
                 $status = 'completed';
             }
             // sleep for 100ms
