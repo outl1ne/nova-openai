@@ -34,6 +34,14 @@ class RunResponse extends Response
         $this->appendMeta('instructions', $this->data['instructions']);
         $this->appendMeta('tools', $this->data['tools']);
         $this->appendMeta('metadata', $this->data['metadata']);
+        $this->appendMeta('incomplete_details', $this->data['incomplete_details']);
+        $this->appendMeta('temperature', $this->data['temperature']);
+        $this->appendMeta('top_p', $this->data['top_p']);
+        $this->appendMeta('truncation_strategy', $this->data['truncation_strategy']);
+        $this->appendMeta('response_format', $this->data['response_format']);
+        $this->appendMeta('tool_choice', $this->data['tool_choice']);
+        $this->appendMeta('parallel_tool_calls', $this->data['parallel_tool_calls']);
+        $this->appendMeta('required_action', $this->data['required_action']);
     }
 
     public function wait(?callable $errorCallback = null): RunResponse
