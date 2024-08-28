@@ -34,7 +34,7 @@ class Messages
         return $this;
     }
 
-    public function assistant(string|array|null $content = null, ?string $name = null, ?array $toolCalls): self
+    public function assistant(string|array|null $content = null, ?string $name = null, ?array $toolCalls = null): self
     {
         $message = [
             'role' => 'assistant',
