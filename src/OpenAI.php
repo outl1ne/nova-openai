@@ -11,6 +11,7 @@ use Outl1ne\NovaOpenAI\Capabilities\Files\Files;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Threads;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Assistants;
 use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings;
+use Outl1ne\NovaOpenAI\Capabilities\VectorStores\VectorStores;
 
 class OpenAI
 {
@@ -49,10 +50,19 @@ class OpenAI
         return new Threads($this);
     }
 
-
     public function files(): Files
     {
         return new Files($this);
+    }
+
+    public function vectorStores(): VectorStores
+    {
+        return new VectorStores($this);
+    }
+
+    public function json(string $response): ?object
+    {
+        return Helpers::json($response);
     }
 
     public function http(): Client
