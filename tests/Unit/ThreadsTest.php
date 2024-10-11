@@ -6,13 +6,14 @@ use Outl1ne\NovaOpenAI\Facades\OpenAI;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Message;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Messages;
-use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantResponse;
-use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\DeleteResponse;
-use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\MessageResponse;
-use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\MessagesResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\RunResponse;
-use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\ThreadDeletionStatusResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\ThreadResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\MessageResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\FileDeleteResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\MessagesResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\DeleteResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Responses\ThreadDeletionStatusResponse;
 
 class ThreadsTest extends \Orchestra\Testbench\TestCase
 {
