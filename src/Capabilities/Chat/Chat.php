@@ -26,6 +26,12 @@ class Chat extends Capability
         ?float $topP = null,
         ?array $tools = null,
         null|string|array $toolChoice = null,
+        ?int $maxCompletionTokens = null,
+        ?bool $store = null,
+        ?array $modalities = null,
+        ?array $audio = null,
+        ?string $serviceTier = null,
+        ?bool $parallelToolCalls = null,
     ) {
         return (new CreateChat($this))->makeRequest(
             $model,
@@ -45,6 +51,12 @@ class Chat extends Capability
             $topP,
             $tools,
             $toolChoice,
+            $maxCompletionTokens,
+            $store,
+            $modalities,
+            $audio,
+            $serviceTier,
+            $parallelToolCalls,
         );
     }
 }

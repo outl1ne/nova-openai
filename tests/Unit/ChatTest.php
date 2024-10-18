@@ -8,6 +8,10 @@ use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonArray;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonObject;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonSchema;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonString;
 
 class ChatTest extends \Orchestra\Testbench\TestCase
 {
@@ -40,6 +44,41 @@ class ChatTest extends \Orchestra\Testbench\TestCase
         $this->assertTrue($response instanceof ChatResponse);
         $this->assertIsArray($response->choices);
         $this->assertJson($response->choices[0]['message']['content']);
+    }
+
+    public function test_chat_json_schema_response(): void
+    {
+        $response = OpenAI::chat()->create(
+            model: 'gpt-4o-mini',
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits.'),
+            responseFormat: ResponseFormat::make()->jsonSchema(JsonObject::make()->property('fruits', JsonArray::make()->items(JsonString::make()))),
+        );
+        $this->assertTrue($response instanceof ChatResponse);
+        $this->assertIsArray($response->json()?->fruits);
+
+        $response = OpenAI::chat()->create(
+            model: 'gpt-4o-mini',
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits.'),
+            responseFormat: ResponseFormat::make()->jsonSchema([
+                'name' => 'response',
+                'strict' => true,
+                'schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'fruits' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                    ],
+                    'additionalProperties' => false,
+                    'required' => ['fruits'],
+                ],
+            ]),
+        );
+        $this->assertTrue($response instanceof ChatResponse);
+        $this->assertIsArray($response->json()?->fruits);
     }
 
     public function test_chat_stream(): void
