@@ -4,11 +4,6 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Chat;
 
 use Exception;
 use GuzzleHttp\Promise\Promise;
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
@@ -37,6 +32,12 @@ class CreateChat extends CapabilityClient
         ?float $topP = null,
         ?array $tools = null,
         null|string|array $toolChoice = null,
+        ?int $maxCompletionTokens = null,
+        ?bool $store = null,
+        ?array $modalities = null,
+        ?array $audio = null,
+        ?string $serviceTier = null,
+        ?bool $parallelToolCalls = null,
     ): ChatResponse|StreamedChatResponse {
         $this->request->model_requested = $model;
         $this->request->input = $messages->messages;
@@ -55,6 +56,12 @@ class CreateChat extends CapabilityClient
         $this->request->appendArgument('top_p', $topP);
         $this->request->appendArgument('tools', $tools);
         $this->request->appendArgument('tool_choice', $toolChoice);
+        $this->request->appendArgument('max_completion_tokens', $maxCompletionTokens);
+        $this->request->appendArgument('store', $store);
+        $this->request->appendArgument('modalities', $modalities);
+        $this->request->appendArgument('audio', $audio);
+        $this->request->appendArgument('service_tier', $serviceTier);
+        $this->request->appendArgument('parallel_tool_calls', $parallelToolCalls);
 
         $this->pending();
 

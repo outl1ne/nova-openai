@@ -15,7 +15,13 @@ class ChatResponse extends Response
         $this->model = $this->data['model'];
         $this->choices = $this->data['choices'];
         $this->appendMeta('id', $this->data['id']);
-        $this->appendMeta('object', $this->data['object']);
+        $this->appendMeta('created', $this->data['created']);
         $this->appendMeta('system_fingerprint', $this->data['system_fingerprint']);
+        $this->appendMeta('object', $this->data['object']);
+    }
+
+    public function json(): ?object
+    {
+        return json_decode($this->choices[0]['message']['content']);
     }
 }

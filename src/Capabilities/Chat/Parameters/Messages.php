@@ -2,8 +2,12 @@
 
 namespace Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters;
 
+use Outl1ne\NovaOpenAI\Traits\StaticMake;
+
 class Messages
 {
+    use StaticMake;
+
     public array $messages = [];
 
     public function system(string|array $content, ?string $name = null): self
