@@ -32,7 +32,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->create(
             model: 'gpt-4o-mini',
-            messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Hello!'),
         );
         $this->assertTrue($response instanceof ChatResponse);
         $this->assertIsArray($response->choices);
@@ -42,8 +42,8 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->create(
             model: 'gpt-4o-mini',
-            messages: (new Messages)->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
-            responseFormat: (new ResponseFormat)->json(),
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
+            responseFormat: ResponseFormat::make()->json(),
         );
         $this->assertTrue($response instanceof ChatResponse);
         $this->assertIsArray($response->choices);
@@ -106,7 +106,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->stream(function (string $newChunk, string $message) {})->create(
             model: 'gpt-4o-mini',
-            messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Hello!'),
         );
         $this->assertTrue($response instanceof StreamedChatResponse);
         $this->assertIsArray($response->choices);
@@ -116,7 +116,7 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->create(
             model: 'gpt-4o-mini',
-            messages: (new Messages)->system('You are a helpful assistant.')->user([
+            messages: Messages::make()->system('You are a helpful assistant.')->user([
                 [
                     'type' => 'text',
                     'text' => 'Describe what\'s on the attached photo',

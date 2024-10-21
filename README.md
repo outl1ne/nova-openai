@@ -95,8 +95,8 @@ $deletedFile = OpenAI::files()->delete($file->id);
 ```php
 $response = OpenAI::chat()->create(
     model: 'gpt-3.5-turbo',
-    messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
-);
+    messages: Messages::make()->system('You are a helpful assistant.')->user('Hello!'),
+)->json();
 ```
 
 Enable JSON response formatting:
@@ -104,9 +104,58 @@ Enable JSON response formatting:
 ```php
 $response = OpenAI::chat()->create(
     model: 'gpt-3.5-turbo',
-    messages: (new Messages)->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
-    responseFormat: (new ResponseFormat)->json(),
-);
+    messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits as JSON array of fruits.'),
+    responseFormat: ResponseFormat::make()->json(),
+)->json();
+```
+
+JSON Structured Outputs example:
+
+```php
+$response = OpenAI::chat()->create(
+    model: 'gpt-4o-mini',
+    messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me 10 tasty fruits.'),
+    responseFormat: ResponseFormat::make()->jsonSchema(
+        JsonObject::make()
+            ->property('fruits', JsonArray::make()->items(JsonString::make()))
+            ->property('number_of_fruits_in_response', JsonInteger::make())
+            ->property('number_of_fruits_in_response_divided_by_three', JsonNumber::make())
+            ->property('is_number_of_fruits_in_response_even', JsonBoolean::make())
+            ->property('fruit_most_occurring_color', JsonEnum::make()->enums(['red', 'green', 'blue']))
+            ->property(
+                'random_integer_or_string_max_one_character',
+                JsonAnyOf::make()
+                    ->schema(JsonInteger::make())
+                    ->schema(JsonString::make())
+            ),
+    ),
+)->json();
+```
+
+With raw JSON schema:
+
+```php
+$response = OpenAI::chat()->create(
+    model: 'gpt-4o-mini',
+    messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits.'),
+    responseFormat: ResponseFormat::make()->jsonSchema([
+        'name' => 'response',
+        'strict' => true,
+        'schema' => [
+            'type' => 'object',
+            'properties' => [
+                'fruits' => [
+                    'type' => 'array',
+                    'items' => [
+                        'type' => 'string',
+                    ],
+                ],
+            ],
+            'additionalProperties' => false,
+            'required' => ['fruits'],
+        ],
+    ]),
+)->json();
 ```
 
 #### Streaming
@@ -116,7 +165,7 @@ $response = OpenAI::chat()->stream(function (string $newChunk, string $message) 
     echo $newChunk;
 })->create(
     model: 'gpt-3.5-turbo',
-    messages: (new Messages)->system('You are a helpful assistant.')->user('Hello!'),
+    messages: Messages::make()->system('You are a helpful assistant.')->user('Hello!'),
 );
 ```
 
@@ -164,6 +213,23 @@ Retrieving a file content.
 $fileContent = OpenAI::files()->retrieveContent($file->id);
 ```
 
+### Vector Stores
+
+```php
+$filePath = __DIR__ . '/../test.txt';
+$file = OpenAI::files()->upload(
+    file_get_contents($filePath),
+    basename($filePath),
+    'assistants',
+);
+
+$vectorStore = OpenAI::vectorStores()->create([$file->id]);
+$vectorStores = OpenAI::vectorStores()->list();
+$vectorStoreRetrieved = OpenAI::vectorStores()->retrieve($vectorStore->id);
+$vectorStoreModified = OpenAI::vectorStores()->modify($vectorStore->id, 'Modified vector store');
+$vectorStoreDeleted = OpenAI::vectorStores()->delete($vectorStore->id);
+```
+
 ### Threads
 
 ```php
@@ -174,11 +240,10 @@ $assistant = OpenAI::assistants()->create(
     'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.'
 );
 $thread = OpenAI::threads()
-    ->create((new ThreadMessages)->user('What is your purpose in one short sentence?'));
+    ->create(Messages::make()->user('What is your purpose in one short sentence?'));
 $message = OpenAI::threads()->messages()
     ->create($thread->id, ThreadMessage::user('How does AI work? Explain it in simple terms in one sentence.'));
-$run = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
-$messages = OpenAI::threads()->messages()->list($thread->id);
+$response = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait()->json();
 
 // cleanup
 $deletedThread = OpenAI::threads()->delete($thread->id);

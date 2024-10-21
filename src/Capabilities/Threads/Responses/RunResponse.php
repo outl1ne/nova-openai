@@ -44,7 +44,7 @@ class RunResponse extends Response
         $this->appendMeta('required_action', $this->data['required_action']);
     }
 
-    public function wait(?callable $errorCallback = null): RunResponse
+    public function wait(?callable $errorCallback = null): MessagesResponse
     {
         $status = null;
         while ($status !== 'completed') {
@@ -63,6 +63,7 @@ class RunResponse extends Response
             // sleep for 100ms
             usleep(100_000);
         }
-        return $runStatus;
+
+        return OpenAI::threads()->messages()->list($this->data['thread_id']);
     }
 }
