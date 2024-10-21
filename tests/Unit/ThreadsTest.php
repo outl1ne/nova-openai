@@ -37,7 +37,7 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
         $this->assertTrue($assistant instanceof AssistantResponse);
 
         $thread = OpenAI::threads()
-            ->create((new Messages)->user('What is your purpose in one short sentence?'));
+            ->create(Messages::make()->user('What is your purpose in one short sentence?'));
         $this->assertTrue($thread instanceof ThreadResponse);
 
         $message = OpenAI::threads()->messages()
@@ -59,11 +59,7 @@ class ThreadsTest extends \Orchestra\Testbench\TestCase
             ]));
         $this->assertTrue($message2 instanceof MessageResponse);
 
-        $run = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
-        $this->assertTrue($run instanceof RunResponse);
-        $this->assertEquals($run->meta['status'], 'completed');
-
-        $messages = OpenAI::threads()->messages()->list($thread->id);
+        $messages = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
         $this->assertTrue($messages instanceof MessagesResponse);
 
         // cleanup

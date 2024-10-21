@@ -4,9 +4,13 @@ namespace Tests\Unit;
 
 use Outl1ne\NovaOpenAI\Facades\OpenAI;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Outl1ne\NovaOpenAI\Capabilities\Threads\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\FileResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
 use Outl1ne\NovaOpenAI\Capabilities\Files\Responses\FileDeleteResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\DeleteResponse;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonObject;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonString;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantFileResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Responses\AssistantListResponse;
@@ -80,5 +84,28 @@ class AssistantTest extends \Orchestra\Testbench\TestCase
 
         $deletedFile = OpenAI::files()->delete($file->id);
         $this->assertTrue($deletedFile instanceof FileDeleteResponse);
+    }
+
+    public function test_assistant_response_format_json_schema(): void
+    {
+        $assistant = OpenAI::assistants()->create(
+            'gpt-4o-mini',
+            'Allan\'s assistant',
+            'For testing purposes of nova-openai package.',
+            'You are a kindergarten teacher. When asked a questions, anwser shortly and as a young child could understand.',
+            responseFormat: ResponseFormat::make()->jsonSchema(
+                JsonObject::make()
+                    ->property('answer', JsonString::make())
+            ),
+        );
+
+        $thread = OpenAI::threads()
+            ->create(Messages::make()->user('What is your purpose in one short sentence?'));
+        $response = OpenAI::threads()->run()->execute($thread->id, $assistant->id)->wait();
+
+        $this->assertIsString($response->json()?->answer);
+
+        OpenAI::threads()->delete($thread->id);
+        OpenAI::assistants()->delete($assistant->id);
     }
 }
