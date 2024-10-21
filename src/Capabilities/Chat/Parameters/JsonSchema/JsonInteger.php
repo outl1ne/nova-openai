@@ -4,7 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema;
 
 use Outl1ne\NovaOpenAI\Traits\StaticMake;
 
-class JsonNumber implements Arrayable
+class JsonInteger implements Arrayable
 {
     use StaticMake;
 
@@ -13,7 +13,7 @@ class JsonNumber implements Arrayable
     public function toArray(): array
     {
         $return = [
-            'type' => 'number',
+            'type' => 'integer',
         ];
 
         if ($this->description) {
