@@ -4,14 +4,18 @@ namespace Tests\Unit;
 
 use Outl1ne\NovaOpenAI\Facades\OpenAI;
 use Orchestra\Testbench\Concerns\WithWorkbench;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonAnyOf;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonEnum;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonArray;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonNumber;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonObject;
-use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonSchema;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonString;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonBoolean;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\JsonSchema\JsonInteger;
 
 class ChatTest extends \Orchestra\Testbench\TestCase
 {
@@ -50,11 +54,28 @@ class ChatTest extends \Orchestra\Testbench\TestCase
     {
         $response = OpenAI::chat()->create(
             model: 'gpt-4o-mini',
-            messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me tasty fruits.'),
-            responseFormat: ResponseFormat::make()->jsonSchema(JsonObject::make()->property('fruits', JsonArray::make()->items(JsonString::make()))),
+            messages: Messages::make()->system('You are a helpful assistant.')->user('Suggest me 10 tasty fruits.'),
+            responseFormat: ResponseFormat::make()->jsonSchema(
+                JsonObject::make()
+                    ->property('fruits', JsonArray::make()->items(JsonString::make()))
+                    ->property('number_of_fruits_in_response', JsonInteger::make())
+                    ->property('number_of_fruits_in_response_divided_by_three', JsonNumber::make())
+                    ->property('is_number_of_fruits_in_response_even', JsonBoolean::make())
+                    ->property('fruit_most_occurring_color', JsonEnum::make()->enums(['red', 'green', 'blue']))
+                    ->property(
+                        'random_integer_or_string_max_one_character',
+                        JsonAnyOf::make()
+                            ->schema(JsonInteger::make())
+                            ->schema(JsonString::make())
+                    ),
+            ),
         );
         $this->assertTrue($response instanceof ChatResponse);
         $this->assertIsArray($response->json()?->fruits);
+        $this->assertIsInt($response->json()?->number_of_fruits_in_response);
+        $this->assertIsFloat($response->json()?->number_of_fruits_in_response_divided_by_three);
+        $this->assertIsBool($response->json()?->is_number_of_fruits_in_response_even);
+        $this->assertIsString($response->json()?->fruit_most_occurring_color);
 
         $response = OpenAI::chat()->create(
             model: 'gpt-4o-mini',
