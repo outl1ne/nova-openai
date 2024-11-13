@@ -4,6 +4,7 @@ namespace Outl1ne\NovaOpenAI\Capabilities;
 
 use Closure;
 use Exception;
+use GuzzleHttp\Exception\ClientException;
 use Outl1ne\NovaOpenAI\OpenAI;
 use GuzzleHttp\Promise\Promise;
 use Outl1ne\NovaOpenAI\StreamHandler;
@@ -128,11 +129,17 @@ abstract class CapabilityClient
         return $cachedResponse;
     }
 
-    public function handleException(Exception $e)
+    public function handleException(ClientException|Exception $e)
     {
         $this->request->time_sec = $this->measure();
         $this->request->status = 'error';
-        $this->request->error = $e->getMessage();
+
+        if ($e instanceof ClientException) {
+            $this->request->error = $e->getResponse()->getBody()->getContents();
+        } else {
+            $this->request->error = $e->getMessage();
+        }
+
         if (($this->capability->shouldStoreCallback)() && ($this->capability->shouldStoreErrorsCallback)($e)) {
             $this->request->save();
         }
