@@ -38,9 +38,11 @@ class CreateChat extends CapabilityClient
         ?array $audio = null,
         ?string $serviceTier = null,
         ?bool $parallelToolCalls = null,
+        ?string $requestName = null,
     ): ChatResponse|StreamedChatResponse {
         $this->request->model_requested = $model;
         $this->request->input = $messages->messages;
+        $this->request->name = $requestName;
         $this->request->appendArgument('response_format', $responseFormat->responseFormat ?? null);
         $this->request->appendArgument('user', $user);
         $this->request->appendArgument('frequency_penalty', $frequencyPenalty);

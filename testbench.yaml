@@ -25,6 +25,8 @@ workbench:
     api: true
     commands: true
     views: false
+  command:
+    kernel: Workbench\App\Console\Kernel
 
 purge:
   directories:

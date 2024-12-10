@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Text;
+use Illuminate\Support\Carbon;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\DateTime;
@@ -15,6 +16,9 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestMethod;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestStatus;
+use Outl1ne\NovaOpenAI\Nova\Fields\OpenAIResponse;
+use Outl1ne\NovaOpenAI\Nova\Filters\RequestNameFilter;
+use Outl1ne\NovaOpenAI\Nova\Filters\RequestStatusFilter;
 
 class OpenAIRequest extends Resource
 {
@@ -36,6 +40,20 @@ class OpenAIRequest extends Resource
         'input',
         'output',
     ];
+
+    /**
+     * The pagination per-page options configured for this resource.
+     *
+     * @return array
+     */
+    public static $perPageOptions = [15, 50, 100, 150];
+
+    /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 15;
 
     /**
      * Get the displayable label of the resource.
@@ -67,7 +85,6 @@ class OpenAIRequest extends Resource
     {
         return [
             ID::make()->sortable(),
-
             Badge::make('Status')
                 ->types([
                     OpenAIRequestStatus::PENDING->value => 'bg-zinc-600 text-zinc-200',
@@ -86,19 +103,27 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::ASSISTANTS->value => 'bg-teal-600 text-teal-200',
                     OpenAIRequestMethod::FILES->value => 'bg-gray-600 text-gray-200',
                 ])->sortable(),
+            Text::make('Name', 'name')->sortable(),
             Number::make('Cost', 'cost')->sortable()->displayUsing(fn($value) => $value === null ? null : '$' . number_format($value, 4)),
             Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn() => $this->time_sec !== null ? "{$this->time_sec} sec" : null),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
             Text::make('Tokens', 'usage_total_tokens')->sortable(),
-            Text::make('Input', 'input')->displayUsing(fn() => $this->jsonToText($this->input))->onlyOnIndex(),
-            Text::make('Output', 'output')->displayUsing(fn() => $this->jsonToText($this->output))->onlyOnIndex(),
-            Code::make('Input', 'input')->json(),
-            Code::make('Output', 'output')->json(),
+            OpenAIResponse::make('Input', 'input')
+                ->onlyOnDetail()
+                ->withMeta(['attribute' => 'input']),
+            OpenAIResponse::make('Output', 'output')
+                ->onlyOnDetail()
+                ->withMeta(['attribute' => 'output']),
             Code::make('Arguments', 'arguments')->json(),
             Code::make('Meta', 'meta')->json(),
             Textarea::make('Error', 'error')->hideFromIndex(),
-            DateTime::make('Created at'),
+            DateTime::make('Created at', 'created_at')->sortable()->displayUsing(function ($value) {
+                return Carbon::parse($value)->format('Y-m-d H:i:s');
+            }),
+            Code::make('Raw Input', 'input')->json(),
+            Code::make('Raw Output', 'output')->json(),
+
         ];
     }
 
@@ -123,7 +148,10 @@ class OpenAIRequest extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            (new RequestNameFilter),
+            (new RequestStatusFilter),
+        ];
     }
 
     /**
