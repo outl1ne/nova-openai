@@ -2,29 +2,31 @@
 
 namespace Workbench\App\Providers;
 
+use NovaKit\NovaDevTool\Nova;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use NovaKit\NovaDevTool\Nova;
-use Orchestra\Workbench\Workbench;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
+
+        // Register commands when running in console
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Workbench\App\Console\Commands\TestAiChatCreate::class
+            ]);
+        }
     }
 
     /**
      * Register the Nova routes.
-     *
-     * @return void
      */
-    protected function routes()
+    protected function routes(): void
     {
         Nova::routes()
             ->withAuthenticationRoutes()
@@ -85,7 +87,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }

@@ -32,6 +32,7 @@ class Chat extends Capability
         ?array $audio = null,
         ?string $serviceTier = null,
         ?bool $parallelToolCalls = null,
+        ?string $requestName = null
     ) {
         return (new CreateChat($this))->makeRequest(
             $model,
@@ -57,6 +58,7 @@ class Chat extends Capability
             $audio,
             $serviceTier,
             $parallelToolCalls,
+            $requestName,
         );
     }
 }
