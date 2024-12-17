@@ -83,7 +83,7 @@ class OpenAIRequest extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [
+        $fields = [
             ID::make()->sortable(),
             Badge::make('Status')
                 ->types([
@@ -104,7 +104,6 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::FILES->value => 'bg-gray-600 text-gray-200',
                 ])->sortable(),
             Text::make('Name', 'name')->sortable(),
-            Number::make('Cost', 'cost')->sortable()->displayUsing(fn($value) => $value === null ? null : '$' . number_format($value, 4)),
             Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn() => $this->time_sec !== null ? "{$this->time_sec} sec" : null),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
@@ -123,8 +122,13 @@ class OpenAIRequest extends Resource
             }),
             Code::make('Raw Input', 'input')->json(),
             Code::make('Raw Output', 'output')->json(),
-
         ];
+
+        if (!config('nova-openai.hide_pricing')) {
+            $fields[] = Number::make('Cost', 'cost')->sortable()->displayUsing(fn($value) => $value === null ? null : '$' . number_format($value, 4));
+        }
+
+        return $fields;
     }
 
     /**
@@ -135,9 +139,12 @@ class OpenAIRequest extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new CostMetrics,
-        ];
+        $cards = [];
+        if (!config('nova-openai.hide_pricing')) {
+            $cards[] = new CostMetrics;
+        }
+
+        return $cards;
     }
 
     /**
