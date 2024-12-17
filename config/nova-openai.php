@@ -47,6 +47,7 @@ return [
     */
 
     'pricing' => null,
+    'hide_pricing' => env('OPENAI_HIDE_PRICING', false),
 
     /*
     |--------------------------------------------------------------------------
