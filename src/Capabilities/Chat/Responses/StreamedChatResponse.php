@@ -32,7 +32,7 @@ class StreamedChatResponse extends StreamResponse
                 $choices[$choice['index']]['index'] = $choice['index'];
                 $choices[$choice['index']]['message']['role'] = $this->handleDelta($choices[$choice['index']]['message']['role'] ?? null, $choice['delta']['role'] ?? null);
                 $choices[$choice['index']]['message']['content'] = $this->handleDelta($choices[$choice['index']]['message']['content'] ?? null, $choice['delta']['content'] ?? null);
-                $choices[$choice['index']]['logprobs'] = $choice['logprobs'];
+                $choices[$choice['index']]['logprobs'] = $choice['logprobs'] ?? null;
                 $choices[$choice['index']]['finish_reason'] = $choice['finish_reason'];
             }
         }
