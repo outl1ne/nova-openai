@@ -10,6 +10,6 @@ class EmbeddingPricing extends Calculator
         $pricing = $this->basePricing->pricing->embedding->{$this->model} ?? null;
 
         if ($pricing === null) return null;
-        return $this->basePricing->pricing->embedding->{$this->model} * $inputTokens / 1000;
+        return $this->basePricing->pricing->embedding->{$this->model} * $inputTokens / 1_000_000;
     }
 }

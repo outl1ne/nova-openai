@@ -17,7 +17,7 @@ class ModelPricing extends Calculator
         $pricing = $this->basePricing->pricing->models->{$model} ?? null;
 
         if ($pricing === null) return null;
-        return $this->basePricing->pricing->models->{$model}->input * $inputTokens / 1000
-            + $this->basePricing->pricing->models->{$model}->output * $outputTokens / 1000;
+        return $this->basePricing->pricing->models->{$model}->input * $inputTokens / 1_000_000
+            + $this->basePricing->pricing->models->{$model}->output * $outputTokens / 1_000_000;
     }
 }
