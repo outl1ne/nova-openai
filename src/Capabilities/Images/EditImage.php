@@ -39,49 +39,21 @@ class EditImage extends CapabilityClient
 
         try {
             $multipart = [];
+            $images = is_string($image) ? [$image] : $image;
 
-            // Handle multiple images
-            if (is_array($image) && isset($image[0])) {
-                foreach ($image as $index => $img) {
-                    if (is_string($img)) {
-                        $multipart[] = [
-                            'name' => "image[]",
-                            'contents' => fopen($img, 'r'),
-                            'type' => mime_content_type($img),
-                        ];
-                    } else {
-                        $multipart[] = [
-                            'name' => "image[]",
-                            'contents' => $img['contents'],
-                            'filename' => $img['filename'] ?? "image_{$index}.png",
-                            'type' => $img['type'] ?? 'image/png',
-                        ];
-                    }
-                }
-            } else {
-                // Handle single image
-                if (is_string($image)) {
-                    $multipart[] = [
-                        'name' => 'image',
-                        'contents' => fopen($image, 'r'),
-                        'type' => mime_content_type($image),
-                    ];
-                } else {
-                    $multipart[] = [
-                        'name' => 'image',
-                        'contents' => $image['contents'],
-                        'filename' => $image['filename'] ?? 'image.png',
-                        'type' => $image['type'] ?? 'image/png',
-                    ];
-                }
+            // Add images
+            foreach ($images as $contents) {
+                $multipart[] = [
+                    'name' => 'image[]',
+                    'contents' => $contents,
+                ];
             }
 
             // Add mask file if provided
             if ($mask) {
                 $multipart[] = [
                     'name' => 'mask',
-                    'contents' => fopen($mask, 'r'),
-                    'type' => mime_content_type($mask),
+                    'contents' => $mask,
                 ];
             }
 
