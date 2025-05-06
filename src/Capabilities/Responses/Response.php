@@ -33,7 +33,7 @@ class Response
         $completionTokens = $this->data['usage']['completion_tokens'] ?? null;
         $totalTokens = $this->data['usage']['total_tokens'] ?? null;
 
-        if ($totalTokens === null) return null;
+        if ($promptTokens === null || $totalTokens === null) return null;
 
         return new Usage(
             $promptTokens,
@@ -44,17 +44,17 @@ class Response
 
     protected function createRateLimit()
     {
-        $limitRequests = $headers['x-ratelimit-limit-requests'][0] ?? null;
+        $limitRequests = $this->headers['x-ratelimit-limit-requests'][0] ?? null;
 
         if ($limitRequests === null) return null;
 
         return new RateLimit(
-            limitRequests: $headers['x-ratelimit-limit-requests'][0] ?? null,
-            limitTokens: $headers['x-ratelimit-limit-tokens'][0] ?? null,
-            remainingRequests: $headers['x-ratelimit-remaining-requests'][0] ?? null,
-            remainingTokens: $headers['x-ratelimit-remaining-tokens'][0] ?? null,
-            resetRequests: $headers['x-ratelimit-reset-requests'][0] ?? null,
-            resetTokens: $headers['x-ratelimit-reset-tokens'][0] ?? null,
+            limitRequests: $this->headers['x-ratelimit-limit-requests'][0] ?? null,
+            limitTokens: $this->headers['x-ratelimit-limit-tokens'][0] ?? null,
+            remainingRequests: $this->headers['x-ratelimit-remaining-requests'][0] ?? null,
+            remainingTokens: $this->headers['x-ratelimit-remaining-tokens'][0] ?? null,
+            resetRequests: $this->headers['x-ratelimit-reset-requests'][0] ?? null,
+            resetTokens: $this->headers['x-ratelimit-reset-tokens'][0] ?? null,
         );
     }
 }

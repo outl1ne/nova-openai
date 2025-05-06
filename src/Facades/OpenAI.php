@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Outl1ne\NovaOpenAI\Capabilities\Chat\Chat chat()
  * @method static \Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings embeddings()
  * @method static \Outl1ne\NovaOpenAI\Capabilities\Files\Files files()
+ * @method static \Outl1ne\NovaOpenAI\Capabilities\Images\Images images()
  * @method static \Outl1ne\NovaOpenAI\Capabilities\Threads\Threads threads()
  * @method static \GuzzleHttp\Client http()
  *
