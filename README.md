@@ -259,6 +259,23 @@ $deletedAssistant = OpenAI::assistants()->delete($assistant->id);
 // );
 ```
 
+### Images
+
+```php
+$images = OpenAI::images()->generate(
+  prompt: 'Cute Otter',
+  model: 'gpt-image-1',
+  size: '1024x1024',
+);
+
+$edited = OpenAI::images()->edit(
+  prompt: 'Add glasses to the otter',
+  model: 'gpt-image-1',
+  size: '1024x1024',
+  image: fopen(storage_path("cute_otter.jpg"), "r"),
+);
+```
+
 ## Testing
 
 You can use the `OpenAIRequest` factory to create a request for testing purposes.
