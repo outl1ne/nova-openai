@@ -79,38 +79,4 @@ class Images extends Capability
             $user,
         );
     }
-
-    /**
-     * Edit multiple images at once
-     * 
-     * @param array<string> $imagePaths Array of image file paths
-     * @param string $prompt The prompt for the edit
-     * @param array $options Additional options for the edit
-     * @return \Outl1ne\NovaOpenAI\Capabilities\Images\Responses\ImageResponse
-     */
-    public function editMultiple(
-        array $imagePaths,
-        string $prompt,
-        array $options = []
-    ) {
-        $images = array_map(function ($path) {
-            return [
-                'contents' => file_get_contents($path),
-                'filename' => basename($path),
-                'type' => mime_content_type($path),
-            ];
-        }, $imagePaths);
-
-        return $this->edit(
-            image: $images,
-            prompt: $prompt,
-            model: $options['model'] ?? null,
-            n: $options['n'] ?? null,
-            size: $options['size'] ?? null,
-            quality: $options['quality'] ?? null,
-            responseFormat: $options['response_format'] ?? 'b64_json',
-            user: $options['user'] ?? null,
-            background: $options['background'] ?? null,
-        );
-    }
-} 
+}

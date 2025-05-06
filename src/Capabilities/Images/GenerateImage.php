@@ -45,10 +45,7 @@ class GenerateImage extends CapabilityClient
 
         try {
             $response = $this->openAI->http()->post($this->path, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'body' => json_encode($this->request->arguments),
+                'json' => $this->request->arguments,
             ]);
 
             return $this->handleResponse(new ImageResponse($response));

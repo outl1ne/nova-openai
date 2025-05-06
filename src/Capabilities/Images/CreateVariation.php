@@ -22,7 +22,6 @@ class CreateVariation extends CapabilityClient
     ): ImageResponse {
         $this->request->model_requested = $model;
         $this->request->input = $image;
-        $this->request->appendArgument('image', $image);
         $this->request->appendArgument('model', $model);
         $this->request->appendArgument('n', $n);
         $this->request->appendArgument('size', $size);
@@ -32,11 +31,24 @@ class CreateVariation extends CapabilityClient
         $this->pending();
 
         try {
-            $response = $this->openAI->http()->post($this->path, [
-                'headers' => [
-                    'Content-Type' => 'application/json',
+            $multipart = [
+                [
+                    'name' => 'image',
+                    'contents' => $image,
                 ],
-                'body' => json_encode($this->request->arguments),
+            ];
+
+            foreach ($this->request->arguments as $key => $value) {
+                if ($value !== null && $key !== 'image') {
+                    $multipart[] = [
+                        'name' => $key,
+                        'contents' => $value,
+                    ];
+                }
+            }
+
+            $response = $this->openAI->http()->post($this->path, [
+                'multipart' => $multipart,
             ]);
 
             return $this->handleResponse(new ImageResponse($response));
