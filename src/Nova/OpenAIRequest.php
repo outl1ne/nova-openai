@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Tabs\Tab;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestMethod;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestStatus;
@@ -108,20 +109,24 @@ class OpenAIRequest extends Resource
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
             Text::make('Tokens', 'usage_total_tokens')->sortable(),
-            OpenAIResponse::make('Input', 'input')
-                ->onlyOnDetail()
-                ->withMeta(['attribute' => 'input']),
-            OpenAIResponse::make('Output', 'output')
-                ->onlyOnDetail()
-                ->withMeta(['attribute' => 'output']),
-            Code::make('Arguments', 'arguments')->json(),
-            Code::make('Meta', 'meta')->json(),
+            Tab::group('OpenAI Requests', [
+                OpenAIResponse::make('Input', 'input')
+                    ->onlyOnDetail()
+                    ->withMeta(['attribute' => 'input']),
+                OpenAIResponse::make('Output', 'output')
+                    ->onlyOnDetail()
+                    ->withMeta(['attribute' => 'output']),
+            ]),
+            Tab::group('Raw OpenAI Request', [
+                Code::make('Raw Input', 'input')->json()->height('800px'),
+                Code::make('Raw Output', 'output')->json()->height('800px'),
+                Code::make('Arguments', 'arguments')->json(),
+                Code::make('Meta', 'meta')->json(),
+            ]),
             Textarea::make('Error', 'error')->hideFromIndex(),
             DateTime::make('Created at', 'created_at')->sortable()->displayUsing(function ($value) {
                 return Carbon::parse($value)->format('Y-m-d H:i:s');
             }),
-            Code::make('Raw Input', 'input')->json(),
-            Code::make('Raw Output', 'output')->json(),
         ];
 
         if (!config('nova-openai.hide_pricing')) {

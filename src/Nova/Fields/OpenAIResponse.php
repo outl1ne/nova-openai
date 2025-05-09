@@ -76,12 +76,12 @@ class OpenAIResponse extends Field
    }
 
    // fetch from meta and resolve for display
-   public function resolveForDisplay($resource, $attribute = null)
+   public function resolveForDisplay($resource, ?string $attribute = null): void
    {
       $attribute = $attribute ?? $this->meta['attribute'] ?? $this->attribute;
       $value = $resource->{$attribute};
 
-      return $this->withMeta([
+      $this->withMeta([
          'displayValue' => $this->formatContent($value)
       ]);
    }
