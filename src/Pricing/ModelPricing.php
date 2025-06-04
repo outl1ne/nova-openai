@@ -8,6 +8,7 @@ class ModelPricing extends Calculator
         'gpt-3.5-turbo' => 'gpt-3.5-turbo-0125',
         'gpt-4-turbo-preview' => 'gpt-4-0125-preview',
         'gpt-4o-2024-08-06' => 'gpt-4o',
+        'o4-mini-2025-04-16' => 'o4-mini',
     ];
 
     public function calculate(int $inputTokens, int $outputTokens = null): ?float

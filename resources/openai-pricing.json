@@ -1,5 +1,10 @@
 {
   "models": {
+    "o4-mini": {
+      "input": 1.1,
+      "cachedInput": 0.275,
+      "output": 4.4,
+    },
     "gpt-4.5-preview": {
       "input": 75,
       "cachedInput": 37.5,
