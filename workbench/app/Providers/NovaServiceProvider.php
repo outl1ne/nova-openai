@@ -2,7 +2,7 @@
 
 namespace Workbench\App\Providers;
 
-use NovaKit\NovaDevTool\Nova;
+use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -89,6 +89,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register(): void
     {
-        //
+        parent::register();
     }
 }
