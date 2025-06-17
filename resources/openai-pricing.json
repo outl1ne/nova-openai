@@ -68,6 +68,12 @@
       "output": 4.4,
       "batchDiscount": 0.5
     },
+    "o3": {
+      "input": 2.0,
+      "cachedInput": 0.5,
+      "output": 8.0,
+      "batchDiscount": 0.5
+    },
     "o1-mini": {
       "input": 3,
       "output": 12,
