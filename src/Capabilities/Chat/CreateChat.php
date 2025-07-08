@@ -6,8 +6,8 @@ use Exception;
 use GuzzleHttp\Promise\Promise;
 use Outl1ne\NovaOpenAI\Capabilities\CapabilityClient;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\Messages;
-use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Parameters\ResponseFormat;
+use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\ChatResponse;
 use Outl1ne\NovaOpenAI\Capabilities\Chat\Responses\StreamedChatResponse;
 
 class CreateChat extends CapabilityClient
@@ -96,6 +96,7 @@ class CreateChat extends CapabilityClient
             if ($response instanceof Promise) {
                 return $this->handleStreamedResponse($response, [$this, 'response']);
             }
+
             return $this->handleResponse(new ChatResponse($response), [$this, 'response']);
         } catch (Exception $e) {
             $this->handleException($e);
