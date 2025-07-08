@@ -12,6 +12,7 @@ class ModelPricing extends Calculator
         'o4-mini-2025-04-16' => 'o4-mini',
         'gpt-4.1-mini-2025-04-14' => 'gpt-4.1-mini',
         'gpt-4.1-2025-04-14' => 'gpt-4.1',
+        'o3-2025-04-16' => 'o3',
     ];
 
     public function calculate(int $inputTokens, int $outputTokens = null): ?float

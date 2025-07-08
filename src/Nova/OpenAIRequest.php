@@ -2,19 +2,19 @@
 
 namespace Outl1ne\NovaOpenAI\Nova;
 
-use Laravel\Nova\Resource;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Code;
-use Laravel\Nova\Fields\Text;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Tabs\Tab;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestMethod;
 use Outl1ne\NovaOpenAI\Enums\OpenAIRequestStatus;
 use Outl1ne\NovaOpenAI\Nova\Fields\OpenAIResponse;
@@ -24,6 +24,7 @@ use Outl1ne\NovaOpenAI\Nova\Filters\RequestStatusFilter;
 class OpenAIRequest extends Resource
 {
     public static $model = \Outl1ne\NovaOpenAI\Models\OpenAIRequest::class;
+
     public static $displayInNavigation = false;
 
     public function title()
@@ -79,7 +80,6 @@ class OpenAIRequest extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -103,9 +103,10 @@ class OpenAIRequest extends Resource
                     OpenAIRequestMethod::THREADS->value => 'bg-neutral-600 text-neutral-200',
                     OpenAIRequestMethod::ASSISTANTS->value => 'bg-teal-600 text-teal-200',
                     OpenAIRequestMethod::FILES->value => 'bg-gray-600 text-gray-200',
+                    OpenAIRequestMethod::RESPONSES->value => 'bg-teal-600 text-gray-200',
                 ])->sortable(),
             Text::make('Name', 'name')->sortable(),
-            Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn() => $this->time_sec !== null ? "{$this->time_sec} sec" : null),
+            Text::make('Request time', 'time_sec')->sortable()->displayUsing(fn () => $this->time_sec !== null ? "{$this->time_sec} sec" : null),
             Text::make('Model requested', 'model_requested')->sortable(),
             Text::make('Model used', 'model_used')->sortable(),
             Text::make('Tokens', 'usage_total_tokens')->sortable(),
@@ -129,8 +130,8 @@ class OpenAIRequest extends Resource
             }),
         ];
 
-        if (!config('nova-openai.hide_pricing')) {
-            $fields[] = Number::make('Cost', 'cost')->sortable()->displayUsing(fn($value) => $value === null ? null : '$' . number_format($value, 4));
+        if (! config('nova-openai.hide_pricing')) {
+            $fields[] = Number::make('Cost', 'cost')->sortable()->displayUsing(fn ($value) => $value === null ? null : '$'.number_format($value, 4));
         }
 
         return $fields;
@@ -139,13 +140,12 @@ class OpenAIRequest extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
     {
         $cards = [];
-        if (!config('nova-openai.hide_pricing')) {
+        if (! config('nova-openai.hide_pricing')) {
             $cards[] = new CostMetrics;
         }
 
@@ -155,7 +155,6 @@ class OpenAIRequest extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -169,7 +168,6 @@ class OpenAIRequest extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -180,7 +178,6 @@ class OpenAIRequest extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
