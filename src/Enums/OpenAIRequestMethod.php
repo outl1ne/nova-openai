@@ -21,6 +21,7 @@ enum OpenAIRequestMethod: string
     case IMAGES = 'images';
     case ASSISTANTS = 'assistants';
     case THREADS = 'threads';
+    case RESPONSES = 'responses';
 
     public function label(): string
     {
@@ -38,6 +39,7 @@ enum OpenAIRequestMethod: string
             self::IMAGES => 'Images',
             self::ASSISTANTS => 'Assistants',
             self::THREADS => 'Threads',
+            self::RESPONSES => 'Responses',
         };
     }
 }

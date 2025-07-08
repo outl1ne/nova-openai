@@ -13,6 +13,7 @@ use Outl1ne\NovaOpenAI\Capabilities\Images\Images;
 use Outl1ne\NovaOpenAI\Capabilities\Assistants\Assistants;
 use Outl1ne\NovaOpenAI\Capabilities\Embeddings\Embeddings;
 use Outl1ne\NovaOpenAI\Capabilities\VectorStores\VectorStores;
+use Outl1ne\NovaOpenAI\Capabilities\Responses\Responses;
 
 class OpenAI
 {
@@ -64,6 +65,11 @@ class OpenAI
     public function images(): Images
     {
         return new Images($this);
+    }
+
+    public function responses(): Responses
+    {
+        return new Responses($this);
     }
 
     public function json(string $response): ?object
